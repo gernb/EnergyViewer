@@ -1,0 +1,486 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		906EF38D2446837A004E1537 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38C2446837A004E1537 /* PieChartView.swift */; };
+		906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38E2446B709004E1537 /* LineGraphView.swift */; };
+		9090FEF4244283F3003175A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF3244283F3003175A3 /* AppDelegate.swift */; };
+		9090FEF6244283F3003175A3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF5244283F3003175A3 /* SceneDelegate.swift */; };
+		9090FEF8244283F3003175A3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF7244283F3003175A3 /* HomeView.swift */; };
+		9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEF9244283F4003175A3 /* Assets.xcassets */; };
+		9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFC244283F4003175A3 /* Preview Assets.xcassets */; };
+		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
+		9090FF0924428867003175A3 /* Valet in Frameworks */ = {isa = PBXBuildFile; productRef = 9090FF0824428867003175A3 /* Valet */; };
+		9090FF0B244288AA003175A3 /* ApiToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* ApiToken.swift */; };
+		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
+		9090FF102442925D003175A3 /* TeslaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0F2442925D003175A3 /* TeslaApi.swift */; };
+		9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF112442B608003175A3 /* HomeViewModel.swift */; };
+		9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF13244361DC003175A3 /* SignInViewModel.swift */; };
+		9090FF1624436738003175A3 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1524436738003175A3 /* SignInView.swift */; };
+		9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1824437327003175A3 /* KeyboardDodging.swift */; };
+		9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1A24439691003175A3 /* UIViewWrapper.swift */; };
+		9090FF1D2443A994003175A3 /* TeslaApi+requestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */; };
+		9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */; };
+		9090FF212443AFA2003175A3 /* TeslaApi+listProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */; };
+		9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */; };
+		9090FF252444C08E003175A3 /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF242444C08E003175A3 /* AlertItem.swift */; };
+		9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */; };
+		9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF282444CCE4003175A3 /* PowerStatusView.swift */; };
+		9090FF2B2444E002003175A3 /* EqualWidthLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */; };
+		9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */; };
+		9090FF2F24452E0F003175A3 /* PowerHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */; };
+		9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF3224452EEA003175A3 /* PowerHistoryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		906EF38C2446837A004E1537 /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
+		906EF38E2446B709004E1537 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
+		9090FEF0244283F3003175A3 /* EnergyViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnergyViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9090FEF3244283F3003175A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9090FEF5244283F3003175A3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9090FEF7244283F3003175A3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		9090FEF9244283F4003175A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9090FEFC244283F4003175A3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9090FEFF244283F4003175A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9090FF0A244288AA003175A3 /* ApiToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiToken.swift; sourceTree = "<group>"; };
+		9090FF0D24428B80003175A3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		9090FF0F2442925D003175A3 /* TeslaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaApi.swift; sourceTree = "<group>"; };
+		9090FF112442B608003175A3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		9090FF13244361DC003175A3 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		9090FF1524436738003175A3 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		9090FF1824437327003175A3 /* KeyboardDodging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDodging.swift; sourceTree = "<group>"; };
+		9090FF1A24439691003175A3 /* UIViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewWrapper.swift; sourceTree = "<group>"; };
+		9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+requestToken.swift"; sourceTree = "<group>"; };
+		9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+refreshToken.swift"; sourceTree = "<group>"; };
+		9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+listProducts.swift"; sourceTree = "<group>"; };
+		9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+liveStatus.swift"; sourceTree = "<group>"; };
+		9090FF242444C08E003175A3 /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
+		9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusViewModel.swift; sourceTree = "<group>"; };
+		9090FF282444CCE4003175A3 /* PowerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusView.swift; sourceTree = "<group>"; };
+		9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualWidthLabel.swift; sourceTree = "<group>"; };
+		9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+calendarHistory.swift"; sourceTree = "<group>"; };
+		9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryViewModel.swift; sourceTree = "<group>"; };
+		9090FF3224452EEA003175A3 /* PowerHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9090FEED244283F3003175A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9090FF0924428867003175A3 /* Valet in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		906EF38B24468153004E1537 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9090FF242444C08E003175A3 /* AlertItem.swift */,
+				9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */,
+				9090FF1824437327003175A3 /* KeyboardDodging.swift */,
+				906EF38E2446B709004E1537 /* LineGraphView.swift */,
+				906EF38C2446837A004E1537 /* PieChartView.swift */,
+				9090FF1A24439691003175A3 /* UIViewWrapper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		9090FEE7244283F3003175A3 = {
+			isa = PBXGroup;
+			children = (
+				9090FEF2244283F3003175A3 /* EnergyViewer */,
+				9090FEF1244283F3003175A3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9090FEF1244283F3003175A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9090FEF0244283F3003175A3 /* EnergyViewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9090FEF2244283F3003175A3 /* EnergyViewer */ = {
+			isa = PBXGroup;
+			children = (
+				9090FEF7244283F3003175A3 /* HomeView.swift */,
+				9090FF112442B608003175A3 /* HomeViewModel.swift */,
+				9090FF3224452EEA003175A3 /* PowerHistoryView.swift */,
+				9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */,
+				9090FF282444CCE4003175A3 /* PowerStatusView.swift */,
+				9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */,
+				9090FF1524436738003175A3 /* SignInView.swift */,
+				9090FF13244361DC003175A3 /* SignInViewModel.swift */,
+				9090FF0D24428B80003175A3 /* UserManager.swift */,
+				9090FEF9244283F4003175A3 /* Assets.xcassets */,
+				906EF38B24468153004E1537 /* Helpers */,
+				9090FF0C24428AEA003175A3 /* Network */,
+				9090FEFB244283F4003175A3 /* Preview Content */,
+				9090FF17244372A4003175A3 /* Support Files */,
+			);
+			path = EnergyViewer;
+			sourceTree = "<group>";
+		};
+		9090FEFB244283F4003175A3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9090FEFC244283F4003175A3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9090FF0C24428AEA003175A3 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				9090FF0A244288AA003175A3 /* ApiToken.swift */,
+				9090FF0F2442925D003175A3 /* TeslaApi.swift */,
+				9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */,
+				9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */,
+				9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */,
+				9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */,
+				9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		9090FF17244372A4003175A3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9090FF01244283F4003175A3 /* Info.plist */,
+				9090FEF3244283F3003175A3 /* AppDelegate.swift */,
+				9090FEF5244283F3003175A3 /* SceneDelegate.swift */,
+				9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9090FEEF244283F3003175A3 /* EnergyViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9090FF04244283F4003175A3 /* Build configuration list for PBXNativeTarget "EnergyViewer" */;
+			buildPhases = (
+				9090FEEC244283F3003175A3 /* Sources */,
+				9090FEED244283F3003175A3 /* Frameworks */,
+				9090FEEE244283F3003175A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EnergyViewer;
+			packageProductDependencies = (
+				9090FF0824428867003175A3 /* Valet */,
+			);
+			productName = EnergyViewer;
+			productReference = 9090FEF0244283F3003175A3 /* EnergyViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9090FEE8244283F3003175A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				ORGANIZATIONNAME = "1dot0 Solutions";
+				TargetAttributes = {
+					9090FEEF244283F3003175A3 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+				};
+			};
+			buildConfigurationList = 9090FEEB244283F3003175A3 /* Build configuration list for PBXProject "EnergyViewer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9090FEE7244283F3003175A3;
+			packageReferences = (
+				9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */,
+			);
+			productRefGroup = 9090FEF1244283F3003175A3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9090FEEF244283F3003175A3 /* EnergyViewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9090FEEE244283F3003175A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */,
+				9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */,
+				9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9090FEEC244283F3003175A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9090FF2F24452E0F003175A3 /* PowerHistoryViewModel.swift in Sources */,
+				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
+				9090FF1624436738003175A3 /* SignInView.swift in Sources */,
+				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
+				9090FF0B244288AA003175A3 /* ApiToken.swift in Sources */,
+				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
+				9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */,
+				9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */,
+				9090FEF4244283F3003175A3 /* AppDelegate.swift in Sources */,
+				9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */,
+				9090FF102442925D003175A3 /* TeslaApi.swift in Sources */,
+				906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */,
+				9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */,
+				9090FF1D2443A994003175A3 /* TeslaApi+requestToken.swift in Sources */,
+				9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */,
+				9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */,
+				9090FEF6244283F3003175A3 /* SceneDelegate.swift in Sources */,
+				9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */,
+				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
+				9090FF0E24428B80003175A3 /* UserManager.swift in Sources */,
+				9090FEF8244283F3003175A3 /* HomeView.swift in Sources */,
+				9090FF2B2444E002003175A3 /* EqualWidthLabel.swift in Sources */,
+				9090FF212443AFA2003175A3 /* TeslaApi+listProducts.swift in Sources */,
+				9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9090FEFF244283F4003175A3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9090FF02244283F4003175A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9090FF03244283F4003175A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9090FF05244283F4003175A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"EnergyViewer/Preview Content\"";
+				DEVELOPMENT_TEAM = 6C7T9FCL5T;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.1dot0.EnergyViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		9090FF06244283F4003175A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"EnergyViewer/Preview Content\"";
+				DEVELOPMENT_TEAM = 6C7T9FCL5T;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.1dot0.EnergyViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9090FEEB244283F3003175A3 /* Build configuration list for PBXProject "EnergyViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9090FF02244283F4003175A3 /* Debug */,
+				9090FF03244283F4003175A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9090FF04244283F4003175A3 /* Build configuration list for PBXNativeTarget "EnergyViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9090FF05244283F4003175A3 /* Debug */,
+				9090FF06244283F4003175A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/square/Valet.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9090FF0824428867003175A3 /* Valet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */;
+			productName = Valet;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9090FEE8244283F3003175A3 /* Project object */;
+}
