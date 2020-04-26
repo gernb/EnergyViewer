@@ -32,8 +32,7 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authoriseRequest(request)
-            .setFailureType(to: URLError.self)
-            .flatMap { self.urlSession.dataTaskPublisher(for: $0) }
+            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
             .tryMap(validateResponse)
             .decode(type: PowerResponse.self, decoder: PowerResponse.decoder)
             .map { $0.response.timeSeries }
@@ -84,8 +83,7 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authoriseRequest(request)
-            .setFailureType(to: URLError.self)
-            .flatMap { self.urlSession.dataTaskPublisher(for: $0) }
+            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
             .tryMap(validateResponse)
             .decode(type: EnergyResponse.self, decoder: EnergyResponse.decoder)
             .map { $0.response.timeSeries }
@@ -148,8 +146,7 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authoriseRequest(request)
-            .setFailureType(to: URLError.self)
-            .flatMap { self.urlSession.dataTaskPublisher(for: $0) }
+            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
             .tryMap(validateResponse)
             .decode(type: SelfConsumptionResponse.self, decoder: SelfConsumptionResponse.decoder)
             .map { $0.response.timeSeries }

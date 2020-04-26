@@ -105,7 +105,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     private let siteId: Int
     private let userManager: UserManager
     private let api: TeslaApi
-    private var timerCancellables = Set<AnyCancellable>()
+    private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
     init(siteId: Int, userManager: UserManager, api: TeslaApi) {
@@ -139,7 +139,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     }
 
     func previousDay() {
-        timerCancellables.removeAll()
+        timerCancellable = nil
         let previous = Calendar.current.date(byAdding: .day, value: -1, to: currentDate)!
         currentDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: previous)!
     }
@@ -156,7 +156,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
             .sink { [weak self] in
                 guard let strongSelf = self else { return }
                 if !strongSelf.userManager.isAuthenticated {
-                    strongSelf.timerCancellables.removeAll()
+                    strongSelf.timerCancellable = nil
                 }
             }
             .store(in: &cancellables)
@@ -176,6 +176,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func monitorForDayChanged() {
         NotificationCenter.default.publisher(for: .NSCalendarDayChanged)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.currentDate = Date()
             }
@@ -185,6 +186,8 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     private func monitorSelectedDate() {
         $currentDate.sink { [weak self] date in
             guard let strongSelf = self else { return }
+            strongSelf.powerData = .empty
+            strongSelf.energyTotal = .empty
             if Calendar.current.isDateInToday(date) {
                 strongSelf.loadData()
                 strongSelf.canAdvanceDate = false
@@ -208,8 +211,6 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func loadData(for date: Date? = nil) {
         guard userManager.isAuthenticated else { return }
-        powerData = .empty
-        energyTotal = .empty
         api.energyHistory(for: siteId, period: .day, endDate: date)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
@@ -226,34 +227,11 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func pollForNewData() {
         guard userManager.isAuthenticated else { return }
-        Timer.publish(every: Constants.refreshInterval, on: .main, in: .default)
+        timerCancellable = Timer.publish(every: Constants.refreshInterval, on: .main, in: .default)
             .autoconnect()
-            .setFailureType(to: Swift.Error.self)
-            .flatMap { [weak self] _ -> AnyPublisher<[TeslaApi.TimePeriodEnergy], Swift.Error> in
-                guard let strongSelf = self else {
-                    return Empty<[TeslaApi.TimePeriodEnergy], Swift.Error>(completeImmediately: true).eraseToAnyPublisher()
-                }
-                return strongSelf.api.energyHistory(for: strongSelf.siteId, period: .day)
+            .sink { [weak self] _ in
+                self?.loadData()
             }
-            .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .compactMap(parse)
-            .assign(to: \.energyTotal, on: self)
-            .store(in: &timerCancellables)
-
-        Timer.publish(every: Constants.refreshInterval, on: .main, in: .default)
-            .autoconnect()
-            .setFailureType(to: Swift.Error.self)
-            .flatMap { [weak self] _ -> AnyPublisher<[TeslaApi.TimePeriodPower], Swift.Error> in
-                guard let strongSelf = self else {
-                    return Empty<[TeslaApi.TimePeriodPower], Swift.Error>(completeImmediately: true).eraseToAnyPublisher()
-                }
-                return strongSelf.api.powerHistory(for: strongSelf.siteId)
-            }
-            .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .assign(to: \.powerDataPoints, on: self)
-            .store(in: &timerCancellables)
     }
 
     private func parse(_ result: [TeslaApi.TimePeriodEnergy]) -> EnergyTotal? {

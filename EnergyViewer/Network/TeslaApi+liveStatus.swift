@@ -15,8 +15,7 @@ extension TeslaApi {
         let request = URLRequest(url: URL(string: "/api/1/energy_sites/\(siteId)/live_status", relativeTo: Constants.baseUri)!)
 
         return authoriseRequest(request)
-            .setFailureType(to: URLError.self)
-            .flatMap { self.urlSession.dataTaskPublisher(for: $0) }
+            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
             .tryMap(validateResponse)
             .decode(type: Response.self, decoder: Response.decoder)
             .map { $0.response }

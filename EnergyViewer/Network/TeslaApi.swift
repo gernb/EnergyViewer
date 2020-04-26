@@ -27,13 +27,17 @@ final class TeslaApi {
         self.token = token
     }
 
-    func authoriseRequest(_ request: URLRequest) -> Future<URLRequest, Never> {
-        return Future<URLRequest, Never> { promise in
+    func authoriseRequest(_ request: URLRequest) -> Future<URLRequest, URLError> {
+        return Future { [weak self] promise in
             DispatchQueue.global().async {
-                self.tokenRefreshing.wait()
-                self.tokenRefreshing.signal()
+                guard let strongSelf = self else {
+                    promise(.success(request))
+                    return
+                }
+                strongSelf.tokenRefreshing.wait()
+                strongSelf.tokenRefreshing.signal()
                 var request = request
-                if let token = self.token {
+                if let token = strongSelf.token {
                     let value = String(format: Constants.authorisationValue, token.auth)
                     request.addValue(value, forHTTPHeaderField: Constants.authorisationKey)
                 }

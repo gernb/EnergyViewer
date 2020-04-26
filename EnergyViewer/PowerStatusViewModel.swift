@@ -62,7 +62,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 
         guard userManager.isAuthenticated else { return }
 
-        loadInitialData()
+        fetchStatus()
         pollForNewData()
     }
 
@@ -77,7 +77,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
             .store(in: &cancellables)
     }
 
-    private func loadInitialData() {
+    private func fetchStatus() {
         api.liveStatus(for: siteId)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
@@ -90,17 +90,8 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
     private func pollForNewData() {
         timerCancellable = Timer.publish(every: Constants.refreshInterval, on: .main, in: .default)
             .autoconnect()
-            .setFailureType(to: Swift.Error.self)
-            .flatMap { [weak self] _ -> AnyPublisher<TeslaApi.SiteStatus, Swift.Error> in
-                guard let strongSelf = self else {
-                    return Empty<TeslaApi.SiteStatus, Swift.Error>(completeImmediately: true).eraseToAnyPublisher()
-                }
-                return strongSelf.api.liveStatus(for: strongSelf.siteId)
-            }
-            .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .sink { [weak self] status in
-                self?.updateStatus(status)
+            .sink { [weak self] _ in
+                self?.fetchStatus()
             }
     }
 

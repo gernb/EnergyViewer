@@ -15,8 +15,7 @@ extension TeslaApi {
         let request = URLRequest(url: URL(string: "/api/1/products", relativeTo: Constants.baseUri)!)
 
         return authoriseRequest(request)
-            .setFailureType(to: URLError.self)
-            .flatMap { self.urlSession.dataTaskPublisher(for: $0) }
+            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
             .tryMap(validateResponse)
             .decode(type: Response.self, decoder: Response.decoder)
             .map { $0.response }
@@ -57,7 +56,7 @@ extension TeslaApi {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.count = try container.decode(Int.self, forKey: .count)
-            self.response = try container.decode([AnyProduct].self, forKey: .response).map { $0.base }
+            self.response = try container.decode([AnyProduct].self, forKey: .response).map { $0.product }
         }
 
         static let decoder: JSONDecoder = {
@@ -68,7 +67,7 @@ extension TeslaApi {
     }
 
     fileprivate struct AnyProduct: TeslaProduct, Decodable {
-        let base: TeslaProduct
+        let product: TeslaProduct
 
         private enum CodingKeys: CodingKey {
             case vehicleId, energySiteId
@@ -77,9 +76,9 @@ extension TeslaApi {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             if container.contains(.vehicleId) {
-                self.base = try Vehicle(from: decoder)
+                self.product = try Vehicle(from: decoder)
             } else if container.contains(.energySiteId) {
-                self.base = try EnergySite(from: decoder)
+                self.product = try EnergySite(from: decoder)
             } else {
                 throw Error.decoding("Unsupported product type")
             }

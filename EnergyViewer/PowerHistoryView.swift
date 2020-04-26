@@ -67,7 +67,7 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                     }
 
                 }
-                .padding()
+                .padding(5)
 
                 if geometry.size.width > 1000 {
                     VStack {
@@ -137,7 +137,7 @@ struct ToggleButton<Content: View>: View {
         content
             .foregroundColor(colour)
             .padding()
-            .frame(width: 145, height: 75)
+            .frame(width: 150, height: 75)
             .overlay(
                 Capsule().stroke(isOn ? colour : .clear, lineWidth: 2)
             )
