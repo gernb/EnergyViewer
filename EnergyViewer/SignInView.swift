@@ -61,7 +61,7 @@ struct SignInView: View {
     }
 }
 
-private extension HorizontalAlignment {
+fileprivate extension HorizontalAlignment {
     struct EqualWidths: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             context[.leading]
