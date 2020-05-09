@@ -31,7 +31,6 @@
 		9090FF252444C08E003175A3 /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF242444C08E003175A3 /* AlertItem.swift */; };
 		9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */; };
 		9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF282444CCE4003175A3 /* PowerStatusView.swift */; };
-		9090FF2B2444E002003175A3 /* EqualWidthLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */; };
 		9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */; };
 		9090FF2F24452E0F003175A3 /* PowerHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */; };
 		9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF3224452EEA003175A3 /* PowerHistoryView.swift */; };
@@ -63,7 +62,6 @@
 		9090FF242444C08E003175A3 /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
 		9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusViewModel.swift; sourceTree = "<group>"; };
 		9090FF282444CCE4003175A3 /* PowerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusView.swift; sourceTree = "<group>"; };
-		9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualWidthLabel.swift; sourceTree = "<group>"; };
 		9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+calendarHistory.swift"; sourceTree = "<group>"; };
 		9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryViewModel.swift; sourceTree = "<group>"; };
 		9090FF3224452EEA003175A3 /* PowerHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryView.swift; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				9090FF242444C08E003175A3 /* AlertItem.swift */,
-				9090FF2A2444E002003175A3 /* EqualWidthLabel.swift */,
 				9090FF1824437327003175A3 /* KeyboardDodging.swift */,
 				906EF38E2446B709004E1537 /* LineGraphView.swift */,
 				906EF38C2446837A004E1537 /* PieChartView.swift */,
@@ -262,7 +259,6 @@
 				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
 				9090FF0E24428B80003175A3 /* UserManager.swift in Sources */,
 				9090FEF8244283F3003175A3 /* HomeView.swift in Sources */,
-				9090FF2B2444E002003175A3 /* EqualWidthLabel.swift in Sources */,
 				9090FF212443AFA2003175A3 /* TeslaApi+listProducts.swift in Sources */,
 				9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */,
 			);

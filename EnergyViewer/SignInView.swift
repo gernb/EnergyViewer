@@ -11,7 +11,6 @@ import Combine
 
 struct SignInView: View {
     @ObservedObject private var viewModel: SignInViewModel
-    @State private var maxLabelWidth = CGFloat.zero
 
     init(userManager: UserManager, api: TeslaApi) {
         viewModel = SignInViewModel(userManager: userManager, api: api)
@@ -19,15 +18,21 @@ struct SignInView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                EqualWidthLabel(text: "Email:", width: $maxLabelWidth)
-                TextField("", text: $viewModel.email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
-            HStack {
-                EqualWidthLabel(text: "Password:", width: $maxLabelWidth)
-                SecureField("", text: $viewModel.password) { self.viewModel.login() }
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            VStack(alignment: .equalWidths) {
+                HStack {
+                    Text("Email:")
+                        .alignmentGuide(.equalWidths) { d in d[.trailing] }
+                    TextField("", text: $viewModel.email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(maxWidth: 400)
+                }
+                HStack {
+                    Text("Password:")
+                        .alignmentGuide(.equalWidths) { d in d[.trailing] }
+                    SecureField("", text: $viewModel.password) { self.viewModel.login() }
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(maxWidth: 400)
+                }
             }
             Button(action: { self.viewModel.login() }) {
                 if viewModel.isLoading {
@@ -54,6 +59,16 @@ struct SignInView: View {
         .frame(maxWidth: 500)
         .keyboardDodging()
     }
+}
+
+private extension HorizontalAlignment {
+    struct EqualWidths: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[.leading]
+        }
+    }
+
+    static let equalWidths = HorizontalAlignment(EqualWidths.self)
 }
 
 struct SignInView_Previews: PreviewProvider {
