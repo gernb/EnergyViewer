@@ -180,11 +180,26 @@ fileprivate extension LineGraphData {
         self.xMax = data.rangeMax
         self.yMin = data.minValue
         self.yMax = data.maxValue
-        self.charts = data.sources.map { source in
-            LineGraphData.ChartData(data: source.values.map { $0.kW },
-                                    colour: source.colour)
+        if data.sources.isEmpty {
+            self.charts = []
+        } else {
+            self.charts = [LineGraphData.ChartData(data: data.sources[0].values.map { _ in 0 },
+                                                  colour: .clear,
+                                                  descriptions: data.sources[0].values.map { Self.formatter.string(from: $0.timestamp) })] +
+                data.sources.map { source in
+                    LineGraphData.ChartData(data: source.values.map { $0.kW },
+                                            colour: source.colour,
+                                            descriptions: source.values.map { String(format: "%.2f kW", $0.kW) })
+            }
         }
     }
+
+    private static let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter
+    }()
 }
 
 struct PowerHistoryView_Previews: PreviewProvider {

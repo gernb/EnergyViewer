@@ -11,6 +11,23 @@ import SwiftUI
 struct LineGraphView: View {
     let data: LineGraphData
 
+    @State private var isDragging = false
+    @State private var dragLocation: CGPoint = .zero
+
+    private var gesture: some Gesture {
+        let dragGesture = DragGesture(minimumDistance: 0)
+            .onChanged { value in
+                self.dragLocation = value.location
+                self.isDragging = true
+            }
+            .onEnded { _ in
+                self.isDragging = false
+                self.dragLocation = .zero
+            }
+        let pressGesture = LongPressGesture()
+        return pressGesture.sequenced(before: dragGesture)
+    }
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -18,6 +35,7 @@ struct LineGraphView: View {
                          maxValue: self.data.yMax,
                          step: self.data.step(for: geometry),
                          geometry: geometry)
+
                 ForEach(self.data.charts) { chart in
                     ChartView(data: chart.data,
                               colour: chart.colour,
@@ -25,7 +43,16 @@ struct LineGraphView: View {
                               offset: self.data.yMin)
                 }
                 .modifier(FlipVertically())
+
+                if self.isDragging {
+                    DragView(location: self.dragLocation,
+                             data: self.data,
+                             step: self.data.step(for: geometry),
+                             height: geometry.size.height)
+                }
             }
+            .contentShape(Rectangle())
+            .gesture(self.gesture)
         }
         .padding(6)
         .drawingGroup()
@@ -37,6 +64,7 @@ struct LineGraphData {
         let id = UUID()
         let data: [Double]
         let colour: Color
+        let descriptions: [String]
     }
 
     let charts: [ChartData]
@@ -51,6 +79,53 @@ struct LineGraphData {
         }
         return CGPoint(x: geometry.size.width / CGFloat(xMax - 1),
                        y: geometry.size.height / CGFloat(yRange))
+    }
+}
+
+fileprivate struct DragView: View {
+    let location: CGPoint
+    let data: LineGraphData
+    let step: CGPoint
+    let height: CGFloat
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var maxIndex: Int {
+        guard let count = data.charts.first?.data.count else { return 0 }
+        return count - 1
+    }
+
+    private var index: Int {
+        let index = Int(max(location.x, 0) / step.x)
+        return min(index, maxIndex)
+    }
+
+    private var dragLine: Path {
+        var path = Path()
+        path.move(to: CGPoint(x: CGFloat(index) * step.x, y: 0))
+        path.addLine(to: CGPoint(x: CGFloat(index) * step.x, y: height))
+        return path
+    }
+
+    private var controlColour: Color {
+        self.colorScheme == .dark ? Color.white : Color.gray
+    }
+
+    var body: some View {
+        ZStack {
+            dragLine
+                .stroke(controlColour, style: StrokeStyle(lineWidth: 1, dash: [5, 2]))
+            HStack {
+                VStack(alignment: .leading) {
+                    ForEach(data.charts) { chart in
+                        Text(chart.descriptions[self.index])
+                            .font(.system(size: 12))
+                            .foregroundColor(chart.colour == .clear ? self.controlColour : chart.colour)
+                    }
+                    Spacer()
+                }
+                Spacer()
+            }.padding(.leading, 30)
+        }
     }
 }
 
@@ -241,7 +316,7 @@ struct LineGraphView_Previews: PreviewProvider {
     static let sampleData = LineGraphData(charts: charts, xMax: 10, yMin: -12, yMax: 25)
 
     static let charts = [
-        LineGraphData.ChartData(data: [10, 20, 15, 25, 5, 8, -12], colour: .blue),
-        LineGraphData.ChartData(data: [-4, 4, 10, 2, 10, 17, -7], colour: Color("GridPowerChart"))
+        LineGraphData.ChartData(data: [10, 20, 15, 25, 5, 8, -12], colour: .blue, descriptions: ["10", "20", "15", "25", "5", "8", "-12"]),
+        LineGraphData.ChartData(data: [-4, 4, 10, 2, 10, 17, -7], colour: Color("GridPowerChart"), descriptions: ["-4", "4", "10", "2", "10"," 17", "-7"])
     ]
 }
