@@ -11,6 +11,7 @@ import SwiftUI
 struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     @Environment(\.colorScheme) var colorScheme
+    @State private var showDatePicker: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -36,6 +37,13 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                         }
                         Text(self.viewModel.date)
                             .font(.title)
+                            .onTapGesture { self.showDatePicker = true }
+                            .popover(isPresented: self.$showDatePicker, arrowEdge: .top) {
+                                DatePickerView(selectedDate: self.viewModel.currentDate) { date in
+                                    self.viewModel.goto(date: date)
+                                    self.showDatePicker = false
+                                }
+                            }
                         Button(action: { self.viewModel.nextDay() }) {
                             Text(" >> ")
                                 .foregroundColor(self.viewModel.canAdvanceDate ? (self.colorScheme == .dark ? .white : .black) : .clear)
@@ -166,6 +174,7 @@ fileprivate extension PowerData.SourceData {
         }
     }
 }
+
 fileprivate extension LineGraphData {
     init(_ data: PowerData) {
         self.xMax = data.rangeMax
@@ -212,6 +221,7 @@ struct PowerHistoryView_Previews: PreviewProvider {
 
     final class PreviewPowerHistoryViewModel: PowerHistoryViewModel {
         var date: String = "Today"
+        var currentDate: Date = Date()
         var canAdvanceDate: Bool = false
         var alert: AlertItem?
         var energyTotal = EnergyTotal(house: "22.0 kWh",
@@ -230,6 +240,7 @@ struct PowerHistoryView_Previews: PreviewProvider {
 
         func nextDay() {}
         func previousDay() {}
+        func goto(date: Date) {}
 
         static let houseSources = [
             EnergyEndpoint(isSource: true, endpointType: .solar, percentage: 78.1, kWh: 78.1),

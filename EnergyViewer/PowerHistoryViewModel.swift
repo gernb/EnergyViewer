@@ -77,6 +77,7 @@ struct PowerData {
 protocol PowerHistoryViewModel: ObservableObject {
     var alert: AlertItem? { get set }
     var date: String { get }
+    var currentDate: Date { get }
     var canAdvanceDate: Bool { get }
     var energyTotal: EnergyTotal { get }
     var showBattery: Bool { get set }
@@ -87,11 +88,13 @@ protocol PowerHistoryViewModel: ObservableObject {
 
     func nextDay()
     func previousDay()
+    func goto(date: Date)
 }
 
 final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     @Published var alert: AlertItem?
     @Published private(set) var date: String
+    @Published private(set) var currentDate: Date
     @Published private(set) var canAdvanceDate: Bool
     @Published private(set) var energyTotal: EnergyTotal
     @Published var showBattery: Bool
@@ -100,7 +103,6 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     @Published var showGrid: Bool
     @Published private(set) var powerData: PowerData
 
-    @Published private var currentDate: Date
     @Published private var powerDataPoints: [TeslaApi.TimePeriodPower] = []
     private let siteId: Int
     private let userManager: UserManager
@@ -142,6 +144,12 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
         timerCancellable = nil
         let previous = Calendar.current.date(byAdding: .day, value: -1, to: currentDate)!
         currentDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: previous)!
+    }
+
+    func goto(date: Date) {
+        timerCancellable = nil
+        let newDate = min(date, Date())
+        currentDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: newDate)!
     }
 
     private func beginMonitoring() {
