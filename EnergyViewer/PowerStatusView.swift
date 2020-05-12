@@ -93,7 +93,7 @@ struct SourceView: View {
             Text(viewModel.subtitle)
         }
         .foregroundColor(.black)
-        .padding()
+        .padding(5)
         .frame(width: 150, height: 130)
         .background(viewModel.colour)
         .cornerRadius(10)
@@ -159,8 +159,8 @@ struct PowerStatusView_Previews: PreviewProvider {
                    state: .exporting),
             Source(id: "Solar",
                    subtitle: "(generating)",
-                   textPower: "7.5 kW",
-                   powerInKW: 7.5,
+                   textPower: "10.0 kW",
+                   powerInKW: 10.0,
                    state: .generating),
             Source(id: "House",
                    subtitle: "",
