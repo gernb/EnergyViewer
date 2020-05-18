@@ -103,17 +103,17 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     @Published var showGrid: Bool
     @Published private(set) var powerData: PowerData
 
-    @Published private var powerDataPoints: [TeslaApi.TimePeriodPower] = []
+    @Published private var powerDataPoints: [TeslaTimePeriodPower] = []
     private let siteId: Int
     private let userManager: UserManager
-    private let api: TeslaApi
+    private let networkModel: TeslaApi
     private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    init(siteId: Int, userManager: UserManager, api: TeslaApi) {
+    init(siteId: Int, userManager: UserManager, networkModel: TeslaApi) {
         self.siteId = siteId
         self.userManager = userManager
-        self.api = api
+        self.networkModel = networkModel
         self.date = "Today"
         self.currentDate = Date()
         self.canAdvanceDate = false
@@ -219,14 +219,14 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func loadData(for date: Date? = nil) {
         guard userManager.isAuthenticated else { return }
-        api.energyHistory(for: siteId, period: .day, endDate: date)
+        networkModel.energyHistory(for: siteId, period: .day, endDate: date)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
             .compactMap(parse)
             .assign(to: \.energyTotal, on: self)
             .store(in: &cancellables)
 
-        api.powerHistory(for: siteId, endDate: date)
+        networkModel.powerHistory(for: siteId, endDate: date)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
             .assign(to: \.powerDataPoints, on: self)
@@ -242,7 +242,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
             }
     }
 
-    private func parse(_ result: [TeslaApi.TimePeriodEnergy]) -> EnergyTotal? {
+    private func parse(_ result: [TeslaTimePeriodEnergy]) -> EnergyTotal? {
         guard let data = result.first else { return nil }
 
         // House
@@ -289,7 +289,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
                            solarDestinations: solarDestinations)
     }
 
-    private func parse(data: [TeslaApi.TimePeriodPower], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
+    private func parse(data: [TeslaTimePeriodPower], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
         var minValue: Double = 0
         var maxValue: Double = 0
         var batteryValues: [PowerData.SourceData.Value] = []
@@ -328,7 +328,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
         switch error {
-        case TeslaApi.Error.httpUnauthorised:
+        case TeslaApiError.httpUnauthorised:
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }

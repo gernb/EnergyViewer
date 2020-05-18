@@ -45,14 +45,14 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 
     private let siteId: Int
     private let userManager: UserManager
-    private let api: TeslaApi
+    private let networkModel: TeslaApi
     private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    init(siteId: Int, userManager: UserManager, api: TeslaApi) {
+    init(siteId: Int, userManager: UserManager, networkModel: TeslaApi) {
         self.siteId = siteId
         self.userManager = userManager
-        self.api = api
+        self.networkModel = networkModel
 
         beginMonitoring()
     }
@@ -78,7 +78,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
     }
 
     private func fetchStatus() {
-        api.liveStatus(for: siteId)
+        networkModel.liveStatus(for: siteId)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
             .sink { [weak self] status in
@@ -95,7 +95,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
             }
     }
 
-    private func updateStatus(_ status: TeslaApi.SiteStatus) {
+    private func updateStatus(_ status: TeslaSiteStatus) {
         // Battery
         batteryChargePercent = status.percentageCharged
         batteryChargeText = String(format: "%.0f%%", status.percentageCharged)
@@ -174,7 +174,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 
     private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
         switch error {
-        case TeslaApi.Error.httpUnauthorised:
+        case TeslaApiError.httpUnauthorised:
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }

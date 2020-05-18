@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-extension TeslaApi {
+extension TeslaApiNetworkModel {
 
     public func listProducts() -> AnyPublisher<[TeslaProduct], Swift.Error> {
         let request = URLRequest(url: URL(string: "/api/1/products", relativeTo: Constants.baseUri)!)
@@ -20,29 +20,6 @@ extension TeslaApi {
             .decode(type: Response.self, decoder: Response.decoder)
             .map { $0.response }
             .eraseToAnyPublisher()
-    }
-
-    struct Vehicle: TeslaProduct, Decodable {
-        let id: Int
-        let vehicleId: Int
-        let displayName: String
-        let optionCodes: String
-    }
-
-    struct EnergySite: TeslaProduct, Decodable {
-        let energySiteId: Int
-        let resourceType: String
-        let siteName: String
-        let id: String
-        let gatewayId: String
-        let energyLeft: Double
-        let totalPackEnergy: Double
-        let percentageCharged: Double
-        let batteryType: String
-        let backupCapable: Bool
-        let batteryPower: Double
-        let syncGridAlertEnabled: Bool
-        let breakerAlertEnabled: Bool
     }
 
     fileprivate struct Response: Decodable {
@@ -76,15 +53,38 @@ extension TeslaApi {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             if container.contains(.vehicleId) {
-                self.product = try Vehicle(from: decoder)
+                self.product = try TeslaVehicle(from: decoder)
             } else if container.contains(.energySiteId) {
-                self.product = try EnergySite(from: decoder)
+                self.product = try TeslaEnergySite(from: decoder)
             } else {
-                throw Error.decoding("Unsupported product type")
+                throw TeslaApiError.decoding("Unsupported product type")
             }
         }
     }
 
 }
 
-protocol TeslaProduct {}
+public protocol TeslaProduct {}
+
+public struct TeslaVehicle: TeslaProduct, Decodable {
+    let id: Int
+    let vehicleId: Int
+    let displayName: String
+    let optionCodes: String
+}
+
+public struct TeslaEnergySite: TeslaProduct, Decodable {
+    let energySiteId: Int
+    let resourceType: String
+    let siteName: String
+    let id: String
+    let gatewayId: String
+    let energyLeft: Double
+    let totalPackEnergy: Double
+    let percentageCharged: Double
+    let batteryType: String
+    let backupCapable: Bool
+    let batteryPower: Double
+    let syncGridAlertEnabled: Bool
+    let breakerAlertEnabled: Bool
+}

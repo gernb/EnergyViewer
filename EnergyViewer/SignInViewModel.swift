@@ -17,12 +17,12 @@ final class SignInViewModel: ObservableObject {
     @Published private(set) var errorMessage: String
 
     private let userManager: UserManager
-    private let api: TeslaApi
+    private let networkModel: TeslaApi
     private var cancellables = Set<AnyCancellable>()
 
-    init(userManager: UserManager, api: TeslaApi) {
+    init(userManager: UserManager, networkModel: TeslaApi) {
         self.userManager = userManager
-        self.api = api
+        self.networkModel = networkModel
         self.email = ""
         self.password = ""
         self.inputIsValid = false
@@ -38,13 +38,13 @@ final class SignInViewModel: ObservableObject {
     func login() {
         errorMessage = ""
         isLoading = true
-        api.requestToken(for: email, password: password)
+        networkModel.requestToken(for: email, password: password)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
                 guard case let .failure(error) = completion else { return }
                 switch error {
-                case TeslaApi.Error.httpUnauthorised:
+                case TeslaApiError.httpUnauthorised:
                     self?.errorMessage = "Login failed. Invalid credentials."
                 default:
                     self?.errorMessage = error.localizedDescription

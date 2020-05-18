@@ -9,9 +9,9 @@
 import Foundation
 import Combine
 
-extension TeslaApi {
+extension TeslaApiNetworkModel {
 
-    func requestToken(for email: String, password: String) -> AnyPublisher<ApiToken, Swift.Error> {
+    public func requestToken(for email: String, password: String) -> AnyPublisher<TeslaToken, Swift.Error> {
         let request: URLRequest = {
             var request = URLRequest(url: URL(string: "/oauth/token", relativeTo: Constants.baseUri)!)
             request.httpMethod = Constants.Method.post
@@ -23,7 +23,7 @@ extension TeslaApi {
         return urlSession.dataTaskPublisher(for: request)
             .tryMap(validateResponse)
             .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
-            .map(ApiToken.init)
+            .map(TeslaToken.init)
             .handleEvents(receiveOutput: { token in self.token = token })
             .eraseToAnyPublisher()
     }

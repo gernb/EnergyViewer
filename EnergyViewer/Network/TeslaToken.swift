@@ -1,5 +1,5 @@
 //
-//  ApiToken.swift
+//  TeslaToken.swift
 //  EnergyViewer
 //
 //  Created by peter bohac on 4/11/20.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct ApiToken: Codable {
+public struct TeslaToken: Codable {
     let auth: String
     let refresh: String
     let validUntil: Date
 }
 
-extension TeslaApi {
+extension TeslaApiNetworkModel {
     struct ApiTokenResponse: Decodable {
         let accessToken: String
         let tokenType: String
@@ -31,8 +31,8 @@ extension TeslaApi {
     }
 }
 
-extension ApiToken {
-    init(response: TeslaApi.ApiTokenResponse) {
+extension TeslaToken {
+    init(response: TeslaApiNetworkModel.ApiTokenResponse) {
         self.init(auth: response.accessToken,
                   refresh: response.refreshToken,
                   validUntil: response.createdAt.addingTimeInterval(response.expiresIn))

@@ -15,10 +15,10 @@ final class UserManager: ObservableObject {
     private let jsonDecoder = JSONDecoder()
     private let jsonEncoder = JSONEncoder()
 
-    var apiToken: ApiToken? {
+    var apiToken: TeslaToken? {
         get {
             guard let tokenData = keychain.object(forKey: Constants.tokenKey),
-                let apiToken = try? jsonDecoder.decode(ApiToken.self, from: tokenData) else { return nil }
+                let apiToken = try? jsonDecoder.decode(TeslaToken.self, from: tokenData) else { return nil }
             return apiToken
         }
         set {

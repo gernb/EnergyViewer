@@ -9,9 +9,9 @@
 import Foundation
 import Combine
 
-extension TeslaApi {
+extension TeslaApiNetworkModel {
 
-    func refreshToken() -> AnyPublisher<ApiToken, Swift.Error> {
+    public func refreshToken() -> AnyPublisher<TeslaToken, Swift.Error> {
         return Future<Void, Never> { promise in
             DispatchQueue.global().async {
                 self.tokenRefreshing.wait()
@@ -31,7 +31,7 @@ extension TeslaApi {
         }
         .tryMap(validateResponse)
         .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
-        .map(ApiToken.init)
+        .map(TeslaToken.init)
         .handleEvents(receiveOutput: { token in self.token = token },
                       receiveCompletion: { _ in self.tokenRefreshing.signal() })
         .eraseToAnyPublisher()

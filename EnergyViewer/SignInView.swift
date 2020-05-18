@@ -12,8 +12,8 @@ import Combine
 struct SignInView: View {
     @ObservedObject private var viewModel: SignInViewModel
 
-    init(userManager: UserManager, api: TeslaApi) {
-        viewModel = SignInViewModel(userManager: userManager, api: api)
+    init(userManager: UserManager, networkModel: TeslaApi) {
+        viewModel = SignInViewModel(userManager: userManager, networkModel: networkModel)
     }
 
     var body: some View {
@@ -73,6 +73,6 @@ fileprivate extension HorizontalAlignment {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(userManager: UserManager(), api: TeslaApi())
+        SignInView(userManager: UserManager(), networkModel: TeslaApiNetworkModel())
     }
 }

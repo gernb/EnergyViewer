@@ -9,20 +9,30 @@
 import Foundation
 import Combine
 
-// Gleaned from: https://www.teslaapi.info
-final class TeslaApi {
-    enum Error: Swift.Error {
-        case invalidResponse
-        case httpUnauthorised
-        case httpError(code: Int)
-        case decoding(String)
-    }
+public protocol TeslaApi {
+    func requestToken(for email: String, password: String) -> AnyPublisher<TeslaToken, Swift.Error>
+    func refreshToken() -> AnyPublisher<TeslaToken, Swift.Error>
+    func listProducts() -> AnyPublisher<[TeslaProduct], Swift.Error>
+    func liveStatus(for siteId: Int) -> AnyPublisher<TeslaSiteStatus, Swift.Error>
+    func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<[TeslaTimePeriodPower], Swift.Error>
+    func energyHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date?) -> AnyPublisher<[TeslaTimePeriodEnergy], Swift.Error>
+    func selfConsumptionHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date?) -> AnyPublisher<[TeslaSelfConsumptionEnergy], Swift.Error>
+}
 
+public enum TeslaApiError: Swift.Error {
+    case invalidResponse
+    case httpUnauthorised
+    case httpError(code: Int)
+    case decoding(String)
+}
+
+// Gleaned from: https://www.teslaapi.info
+public final class TeslaApiNetworkModel: TeslaApi {
     let urlSession: URLSession
-    var token: ApiToken?
+    var token: TeslaToken?
     let tokenRefreshing = DispatchSemaphore(value: 1)
 
-    init(urlSession: URLSession = URLSession.shared, token: ApiToken? = nil) {
+    public init(urlSession: URLSession = URLSession.shared, token: TeslaToken? = nil) {
         self.urlSession = urlSession
         self.token = token
     }
@@ -47,13 +57,13 @@ final class TeslaApi {
     }
 
     func validateResponse(data: Data, response: URLResponse) throws -> Data {
-        guard let response = response as? HTTPURLResponse else { throw Error.invalidResponse }
+        guard let response = response as? HTTPURLResponse else { throw TeslaApiError.invalidResponse }
         if 200 ..< 300 ~= response.statusCode {
             return data
-        } else if response.statusCode == 401{
-            throw Error.httpUnauthorised
+        } else if response.statusCode == 401 {
+            throw TeslaApiError.httpUnauthorised
         } else {
-            throw Error.httpError(code: response.statusCode)
+            throw TeslaApiError.httpError(code: response.statusCode)
         }
     }
 

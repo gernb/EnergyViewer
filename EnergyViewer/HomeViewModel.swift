@@ -20,7 +20,7 @@ protocol HomeViewModel: ObservableObject {
     associatedtype PowerHistoryViewModelType: PowerHistoryViewModel
 
     var userManager: UserManager { get }
-    var api: TeslaApi { get }
+    var networkModel: TeslaApi { get }
     var state: HomeViewModelState<PowerStatusViewModelType, PowerHistoryViewModelType> { get }
     var showSignIn: Bool { get set }
     var alert: AlertItem? { get set }
@@ -31,7 +31,7 @@ protocol HomeViewModel: ObservableObject {
 final class NetworkHomeViewModel: HomeViewModel {
     typealias State = HomeViewModelState<NetworkPowerStatusViewModel, NetworkPowerHistoryViewModel>
     let userManager = UserManager()
-    let api: TeslaApi
+    let networkModel: TeslaApi
     @Published private(set) var state: State
     @Published var showSignIn: Bool
     @Published var alert: AlertItem?
@@ -40,7 +40,7 @@ final class NetworkHomeViewModel: HomeViewModel {
 
     init() {
         UIApplication.shared.isIdleTimerDisabled = true
-        api = TeslaApi(token: userManager.apiToken)
+        networkModel = TeslaApiNetworkModel(token: userManager.apiToken)
 
         if (userManager.isAuthenticated) {
             showSignIn = false
@@ -87,10 +87,10 @@ final class NetworkHomeViewModel: HomeViewModel {
 
     private func refreshToken() {
         guard userManager.isAuthenticated else { return }
-        api.refreshToken()
+        networkModel.refreshToken()
             .receive(on: DispatchQueue.main)
             .catch(handleError)
-            .map { token -> ApiToken? in token } // this is stupid
+            .map { token -> TeslaToken? in token } // this is stupid
             .assign(to: \.apiToken, on: userManager)
             .store(in: &self.cancellables)
     }
@@ -102,8 +102,8 @@ final class NetworkHomeViewModel: HomeViewModel {
             .catch(handleError)
             .compactMap { [weak self] site -> State? in
                 guard let strongSelf = self else { return nil }
-                let powerStatusVM = NetworkPowerStatusViewModel(siteId: site.id, userManager: strongSelf.userManager, api: strongSelf.api)
-                let powerHistoryVM = NetworkPowerHistoryViewModel(siteId: site.id, userManager: strongSelf.userManager, api: strongSelf.api)
+                let powerStatusVM = NetworkPowerStatusViewModel(siteId: site.id, userManager: strongSelf.userManager, networkModel: strongSelf.networkModel)
+                let powerHistoryVM = NetworkPowerHistoryViewModel(siteId: site.id, userManager: strongSelf.userManager, networkModel: strongSelf.networkModel)
                 return .loggedIn(siteName: site.name, powerStatusVM, powerHistoryVM)
             }
             .assign(to: \.state, on: self)
@@ -116,9 +116,9 @@ final class NetworkHomeViewModel: HomeViewModel {
                 .setFailureType(to: Swift.Error.self)
                 .eraseToAnyPublisher()
         } else {
-            return api.listProducts()
+            return networkModel.listProducts()
                 .tryMap { [weak self] products in
-                    guard let energySite = products.first(where: { $0 is TeslaApi.EnergySite }) as? TeslaApi.EnergySite else { throw Error.noEnergySitesFound }
+                    guard let energySite = products.first(where: { $0 is TeslaEnergySite }) as? TeslaEnergySite else { throw Error.noEnergySitesFound }
                     let site = (energySite.siteName, energySite.energySiteId)
                     self?.userManager.energySite = site
                     return site
@@ -129,7 +129,7 @@ final class NetworkHomeViewModel: HomeViewModel {
 
     private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
         switch error {
-        case TeslaApi.Error.httpUnauthorised:
+        case TeslaApiError.httpUnauthorised:
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }

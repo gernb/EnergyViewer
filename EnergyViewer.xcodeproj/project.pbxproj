@@ -17,7 +17,7 @@
 		9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFC244283F4003175A3 /* Preview Assets.xcassets */; };
 		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
 		9090FF0924428867003175A3 /* Valet in Frameworks */ = {isa = PBXBuildFile; productRef = 9090FF0824428867003175A3 /* Valet */; };
-		9090FF0B244288AA003175A3 /* ApiToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* ApiToken.swift */; };
+		9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* TeslaToken.swift */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
 		9090FF102442925D003175A3 /* TeslaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0F2442925D003175A3 /* TeslaApi.swift */; };
 		9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF112442B608003175A3 /* HomeViewModel.swift */; };
@@ -49,7 +49,7 @@
 		9090FEFC244283F4003175A3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9090FEFF244283F4003175A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9090FF0A244288AA003175A3 /* ApiToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiToken.swift; sourceTree = "<group>"; };
+		9090FF0A244288AA003175A3 /* TeslaToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaToken.swift; sourceTree = "<group>"; };
 		9090FF0D24428B80003175A3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9090FF0F2442925D003175A3 /* TeslaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaApi.swift; sourceTree = "<group>"; };
 		9090FF112442B608003175A3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -142,13 +142,13 @@
 		9090FF0C24428AEA003175A3 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				9090FF0A244288AA003175A3 /* ApiToken.swift */,
 				9090FF0F2442925D003175A3 /* TeslaApi.swift */,
 				9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */,
 				9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */,
 				9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */,
 				9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */,
 				9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */,
+				9090FF0A244288AA003175A3 /* TeslaToken.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -245,7 +245,7 @@
 				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
 				9090FF1624436738003175A3 /* SignInView.swift in Sources */,
 				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
-				9090FF0B244288AA003175A3 /* ApiToken.swift in Sources */,
+				9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */,
 				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
 				44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */,
 				9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */,

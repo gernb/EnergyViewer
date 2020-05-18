@@ -64,7 +64,7 @@ fileprivate struct ContentView<ViewModel: HomeViewModel>: View {
                 Button(action: { self.viewModel.showSignIn.toggle() })  {
                     Text("Sign in")
                 }.sheet(isPresented: $viewModel.showSignIn) {
-                    SignInView(userManager: self.viewModel.userManager, api: self.viewModel.api)
+                    SignInView(userManager: self.viewModel.userManager, networkModel: self.viewModel.networkModel)
                 }
             )
         }
@@ -92,7 +92,7 @@ struct HomeView_Previews: PreviewProvider {
     final class PreviewHomeViewModel: HomeViewModel {
         typealias State = HomeViewModelState<PowerStatusView_Previews.PreviewPowerStatusViewModel, PowerHistoryView_Previews.PreviewPowerHistoryViewModel>
         var userManager = UserManager()
-        var api = TeslaApi()
+        var networkModel: TeslaApi = TeslaApiNetworkModel()
         var state: State
         var showSignIn: Bool
         var alert: AlertItem?
