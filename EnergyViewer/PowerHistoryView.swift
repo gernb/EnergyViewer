@@ -17,6 +17,8 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
         GeometryReader { geometry in
 
             HStack {
+                Spacer()
+
                 if geometry.size.width > 1000 {
                     VStack {
                         Text("Solar Destinations")
@@ -55,7 +57,7 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                     EnergyTotalsView(viewModel: self.viewModel)
                         .frame(minHeight: 75)
                     LineGraphView(data: LineGraphData(self.viewModel.powerData))
-                        .frame(maxWidth: 800)
+                        .frame(maxWidth: 700)
 
                     if geometry.size.width <= 1000 {
                         HStack {
@@ -85,6 +87,8 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                             .frame(maxWidth: 200)
                     }
                 }
+
+                Spacer()
             }
 
         }

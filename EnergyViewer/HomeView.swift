@@ -84,9 +84,9 @@ struct HomeView_Previews: PreviewProvider {
                 HomeView(viewModel: PreviewHomeViewModel.loggedInLoading)
             }
             .preferredColorScheme(colorScheme)
-            .previewDisplayName("\(colorScheme)")
-        }
-        .previewLayout(.fixed(width: 1194, height: 834))
+            .previewDisplayName("\(colorScheme)")        }
+        .previewLayout(.fixed(width: 1024, height: 768)) // iPad mini @2x
+
     }
 
     final class PreviewHomeViewModel: HomeViewModel {
