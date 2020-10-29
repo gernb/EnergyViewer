@@ -37,7 +37,7 @@ struct Keychain {
         }
     }
 
-    func allKeys() -> [String] {
+    func allKeys() throws -> [String] {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecMatchLimit as String: kSecMatchLimitAll,
@@ -50,7 +50,7 @@ struct Keychain {
         } else {
             let msg = SecCopyErrorMessageString(result, nil) as String? ?? "<none>"
             print("allKeys() failed with \(result): \(msg)")
-            return []
+            throw Error.failure(status: result, message: msg)
         }
     }
 

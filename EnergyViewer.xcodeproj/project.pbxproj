@@ -9,13 +9,11 @@
 /* Begin PBXBuildFile section */
 		44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B2EB13254A425F0001C4BF /* Keychain.swift */; };
 		44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D18C8124677575004BFFCD /* DatePickerView.swift */; };
+		44E4AB99254B00B30036BA73 /* EnergyViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E4AB98254B00B30036BA73 /* EnergyViewerApp.swift */; };
 		906EF38D2446837A004E1537 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38C2446837A004E1537 /* PieChartView.swift */; };
 		906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38E2446B709004E1537 /* LineGraphView.swift */; };
-		9090FEF4244283F3003175A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF3244283F3003175A3 /* AppDelegate.swift */; };
-		9090FEF6244283F3003175A3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF5244283F3003175A3 /* SceneDelegate.swift */; };
 		9090FEF8244283F3003175A3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF7244283F3003175A3 /* HomeView.swift */; };
 		9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEF9244283F4003175A3 /* Assets.xcassets */; };
-		9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFC244283F4003175A3 /* Preview Assets.xcassets */; };
 		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
 		9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* TeslaToken.swift */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
@@ -41,14 +39,12 @@
 		44B2EB13254A425F0001C4BF /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		44D18C8124677575004BFFCD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnergyViewer.entitlements; sourceTree = "<group>"; };
+		44E4AB98254B00B30036BA73 /* EnergyViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyViewerApp.swift; sourceTree = "<group>"; };
 		906EF38C2446837A004E1537 /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		906EF38E2446B709004E1537 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
 		9090FEF0244283F3003175A3 /* EnergyViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnergyViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9090FEF3244283F3003175A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9090FEF5244283F3003175A3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9090FEF7244283F3003175A3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9090FEF9244283F4003175A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9090FEFC244283F4003175A3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9090FEFF244283F4003175A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9090FF0A244288AA003175A3 /* TeslaToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaToken.swift; sourceTree = "<group>"; };
@@ -115,7 +111,7 @@
 		9090FEF2244283F3003175A3 /* EnergyViewer */ = {
 			isa = PBXGroup;
 			children = (
-				44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */,
+				44E4AB98254B00B30036BA73 /* EnergyViewerApp.swift */,
 				9090FEF7244283F3003175A3 /* HomeView.swift */,
 				9090FF112442B608003175A3 /* HomeViewModel.swift */,
 				9090FF3224452EEA003175A3 /* PowerHistoryView.swift */,
@@ -128,18 +124,9 @@
 				9090FEF9244283F4003175A3 /* Assets.xcassets */,
 				906EF38B24468153004E1537 /* Helpers */,
 				9090FF0C24428AEA003175A3 /* Network */,
-				9090FEFB244283F4003175A3 /* Preview Content */,
 				9090FF17244372A4003175A3 /* Support Files */,
 			);
 			path = EnergyViewer;
-			sourceTree = "<group>";
-		};
-		9090FEFB244283F4003175A3 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				9090FEFC244283F4003175A3 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		9090FF0C24428AEA003175A3 /* Network */ = {
@@ -159,9 +146,8 @@
 		9090FF17244372A4003175A3 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */,
 				9090FF01244283F4003175A3 /* Info.plist */,
-				9090FEF3244283F3003175A3 /* AppDelegate.swift */,
-				9090FEF5244283F3003175A3 /* SceneDelegate.swift */,
 				9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */,
 			);
 			path = "Support Files";
@@ -230,7 +216,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */,
-				9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */,
 				9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,15 +236,14 @@
 				44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */,
 				9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */,
 				9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */,
-				9090FEF4244283F3003175A3 /* AppDelegate.swift in Sources */,
 				9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */,
 				9090FF102442925D003175A3 /* TeslaApi.swift in Sources */,
 				906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */,
 				9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */,
 				9090FF1D2443A994003175A3 /* TeslaApi+requestToken.swift in Sources */,
+				44E4AB99254B00B30036BA73 /* EnergyViewerApp.swift in Sources */,
 				9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */,
 				9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */,
-				9090FEF6244283F3003175A3 /* SceneDelegate.swift in Sources */,
 				9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */,
 				44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */,
 				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
@@ -404,9 +388,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = EnergyViewer/EnergyViewer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "EnergyViewer/Support Files/EnergyViewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"EnergyViewer/Preview Content\"";
 				DEVELOPMENT_TEAM = XB7GA2R58L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
@@ -427,9 +410,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = EnergyViewer/EnergyViewer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "EnergyViewer/Support Files/EnergyViewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"EnergyViewer/Preview Content\"";
 				DEVELOPMENT_TEAM = XB7GA2R58L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
