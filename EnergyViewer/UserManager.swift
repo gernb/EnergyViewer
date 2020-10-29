@@ -7,26 +7,15 @@
 //
 
 import Foundation
-import Valet
 
 final class UserManager: ObservableObject {
-    private let keychain = Valet.valet(with: Constants.keychainIdentity, accessibility: .whenUnlocked)
-    private let defaults = UserDefaults.standard
-    private let jsonDecoder = JSONDecoder()
-    private let jsonEncoder = JSONEncoder()
+    private var keychain = Keychain()
+    private var userDefaults = UserDefaults.standard
 
     var apiToken: TeslaToken? {
-        get {
-            guard let tokenData = keychain.object(forKey: Constants.tokenKey),
-                let apiToken = try? jsonDecoder.decode(TeslaToken.self, from: tokenData) else { return nil }
-            return apiToken
-        }
+        get { keychain[Constants.tokenKey] }
         set {
-            if let apiToken = newValue, let data = try? jsonEncoder.encode(apiToken) {
-                keychain.set(object: data, forKey: Constants.tokenKey)
-            } else {
-                keychain.removeObject(forKey: Constants.tokenKey)
-            }
+            keychain[Constants.tokenKey] = newValue
             objectWillChange.send()
         }
     }
@@ -36,34 +25,16 @@ final class UserManager: ObservableObject {
         return apiToken.validUntil > Date().addingTimeInterval(10) // 10 seconds
     }
 
-    var energySite: (name: String, id: Int)? {
-        get {
-            guard let data = defaults.object(forKey: Constants.energySiteKey) as? Data,
-                let site = try? jsonDecoder.decode(EnergySite.self, from: data) else { return nil }
-            return (site.name, site.id)
-        }
-        set {
-            if let value = newValue, let data = try? jsonEncoder.encode(EnergySite(name: value.name, id: value.id)) {
-                defaults.setValue(data, forKey: Constants.energySiteKey)
-            } else {
-                defaults.removeObject(forKey: Constants.energySiteKey)
-            }
-        }
+    typealias EnergySite = (name: String, id: Int)
+    var energySite: EnergySite? {
+        get { userDefaults[Constants.energySiteKey]?.site }
+        set { userDefaults[Constants.energySiteKey] = CodableEnergySite(newValue) }
     }
 
-    var showEnergyGraph: (battery: Bool, solar: Bool, house: Bool, grid: Bool)? {
-        get {
-            guard let data = defaults.object(forKey: Constants.energyGraphKey) as? Data,
-                let energyGraph = try? jsonDecoder.decode(EnergyGraph.self, from: data) else { return nil }
-            return (energyGraph.showBattery, energyGraph.showSolar, energyGraph.showHouse, energyGraph.showGrid)
-        }
-        set {
-            if let value = newValue, let data = try? jsonEncoder.encode(EnergyGraph(showBattery: value.battery, showSolar: value.solar, showHouse: value.house, showGrid: value.grid)) {
-                defaults.setValue(data, forKey: Constants.energyGraphKey)
-            } else {
-                defaults.removeObject(forKey: Constants.energyGraphKey)
-            }
-        }
+    typealias EnergyGraph = (battery: Bool, solar: Bool, house: Bool, grid: Bool)
+    var showEnergyGraph: EnergyGraph? {
+        get { userDefaults[Constants.energyGraphKey]?.graph }
+        set { userDefaults[Constants.energyGraphKey] = CodableEnergyGraph(newValue) }
     }
 
     func logout() {
@@ -71,23 +42,68 @@ final class UserManager: ObservableObject {
         energySite = nil
         showEnergyGraph = nil
     }
+}
 
-    private enum Constants {
-        static let keychainIdentity = Identifier(nonEmpty: "net.1dot0.EnergyViewer")!
-        static let tokenKey = "ApiToken"
-        static let energySiteKey = "EnergySite"
-        static let energyGraphKey = "EnergyGraph"
+private extension UserManager {
+    enum Constants {
+        static let tokenKey = Keychain.Key<TeslaToken>(name: "ApiToken")
+        static let energySiteKey = UserDefaults.Key<CodableEnergySite>(name: "EnergySite")
+        static let energyGraphKey = UserDefaults.Key<CodableEnergyGraph>(name: "EnergyGraph")
     }
 
-    private struct EnergySite: Codable {
+    struct CodableEnergySite: Codable {
         let name: String
         let id: Int
+        var site: EnergySite { (name, id) }
+        init?(_ site: EnergySite?) {
+            if let tuple = site {
+                self.name = tuple.name
+                self.id = tuple.id
+            } else {
+                return nil
+            }
+        }
     }
 
-    private struct EnergyGraph: Codable {
+    struct CodableEnergyGraph: Codable {
         let showBattery: Bool
         let showSolar: Bool
         let showHouse: Bool
         let showGrid: Bool
+        var graph: EnergyGraph { (showBattery, showSolar, showHouse, showGrid) }
+        init?(_ graph: EnergyGraph?) {
+            if let tuple = graph {
+                self.showBattery = tuple.battery
+                self.showSolar = tuple.solar
+                self.showHouse = tuple.house
+                self.showGrid = tuple.grid
+            } else {
+                return nil
+            }
+        }
     }
+}
+
+private extension UserDefaults {
+    struct Key<Value> {
+        var name: String
+    }
+
+    subscript<T: Codable>(key: Key<T>) -> T? {
+        get {
+            guard let data = object(forKey: key.name) as? Data,
+                let val = try? jsonDecoder.decode(T.self, from: data) else { return nil }
+            return val
+        }
+        set {
+            if let value = newValue, let data = try? jsonEncoder.encode(value) {
+                setValue(data, forKey: key.name)
+            } else {
+                removeObject(forKey: key.name)
+            }
+        }
+    }
+
+    private var jsonDecoder: JSONDecoder { .init() }
+    private var jsonEncoder: JSONEncoder { .init() }
 }

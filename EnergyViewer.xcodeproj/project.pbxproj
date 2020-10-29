@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B2EB13254A425F0001C4BF /* Keychain.swift */; };
 		44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D18C8124677575004BFFCD /* DatePickerView.swift */; };
 		906EF38D2446837A004E1537 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38C2446837A004E1537 /* PieChartView.swift */; };
 		906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38E2446B709004E1537 /* LineGraphView.swift */; };
@@ -16,7 +17,6 @@
 		9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEF9244283F4003175A3 /* Assets.xcassets */; };
 		9090FEFD244283F4003175A3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFC244283F4003175A3 /* Preview Assets.xcassets */; };
 		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
-		9090FF0924428867003175A3 /* Valet in Frameworks */ = {isa = PBXBuildFile; productRef = 9090FF0824428867003175A3 /* Valet */; };
 		9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* TeslaToken.swift */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
 		9090FF102442925D003175A3 /* TeslaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0F2442925D003175A3 /* TeslaApi.swift */; };
@@ -38,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44B2EB13254A425F0001C4BF /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		44D18C8124677575004BFFCD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		906EF38C2446837A004E1537 /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		906EF38E2446B709004E1537 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9090FF0924428867003175A3 /* Valet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +87,7 @@
 				9090FF242444C08E003175A3 /* AlertItem.swift */,
 				44D18C8124677575004BFFCD /* DatePickerView.swift */,
 				9090FF1824437327003175A3 /* KeyboardDodging.swift */,
+				44B2EB13254A425F0001C4BF /* Keychain.swift */,
 				906EF38E2446B709004E1537 /* LineGraphView.swift */,
 				906EF38C2446837A004E1537 /* PieChartView.swift */,
 				9090FF1A24439691003175A3 /* UIViewWrapper.swift */,
@@ -181,7 +182,6 @@
 			);
 			name = EnergyViewer;
 			packageProductDependencies = (
-				9090FF0824428867003175A3 /* Valet */,
 			);
 			productName = EnergyViewer;
 			productReference = 9090FEF0244283F3003175A3 /* EnergyViewer.app */;
@@ -212,7 +212,6 @@
 			);
 			mainGroup = 9090FEE7244283F3003175A3;
 			packageReferences = (
-				9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */,
 			);
 			productRefGroup = 9090FEF1244283F3003175A3 /* Products */;
 			projectDirPath = "";
@@ -260,6 +259,7 @@
 				9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */,
 				9090FEF6244283F3003175A3 /* SceneDelegate.swift in Sources */,
 				9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */,
+				44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */,
 				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
 				9090FF0E24428B80003175A3 /* UserManager.swift in Sources */,
 				9090FEF8244283F3003175A3 /* HomeView.swift in Sources */,
@@ -462,25 +462,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/square/Valet.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.8;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9090FF0824428867003175A3 /* Valet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9090FF0724428867003175A3 /* XCRemoteSwiftPackageReference "Valet" */;
-			productName = Valet;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9090FEE8244283F3003175A3 /* Project object */;
 }
