@@ -89,21 +89,23 @@ private extension UserDefaults {
         var name: String
     }
 
+    private enum Constants {
+        static let decoder = JSONDecoder()
+        static let encoder = JSONEncoder()
+    }
+
     subscript<T: Codable>(key: Key<T>) -> T? {
         get {
             guard let data = object(forKey: key.name) as? Data,
-                let val = try? jsonDecoder.decode(T.self, from: data) else { return nil }
+                  let val = try? Constants.decoder.decode(T.self, from: data) else { return nil }
             return val
         }
         set {
-            if let value = newValue, let data = try? jsonEncoder.encode(value) {
+            if let value = newValue, let data = try? Constants.encoder.encode(value) {
                 setValue(data, forKey: key.name)
             } else {
                 removeObject(forKey: key.name)
             }
         }
     }
-
-    private var jsonDecoder: JSONDecoder { .init() }
-    private var jsonEncoder: JSONEncoder { .init() }
 }
