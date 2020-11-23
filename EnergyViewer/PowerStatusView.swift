@@ -24,7 +24,11 @@ struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
                         SourceView(viewModel: source)
                     }
                 }
-                if (showRawStatus) {
+                if viewModel.stormModeActive {
+                    Text("Storm Mode is Active")
+                        .foregroundColor(.orange)
+                }
+                if showRawStatus {
                     Divider()
                     HStack {
                         Text(viewModel.rawStatus).lineLimit(nil)
@@ -177,6 +181,7 @@ struct PowerStatusView_Previews: PreviewProvider {
                    state: .notInUse)
         ]
         var gridIsOffline = false
+        var stormModeActive = false
         var rawStatus = "rawStatus"
     }
 }
