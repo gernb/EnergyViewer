@@ -6,8 +6,9 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import UIKit
 import Combine
+import TeslaAPI
+import UIKit
 
 enum HomeViewModelState<PowerStatusVM: PowerStatusViewModel, PowerHistoryVM: PowerHistoryViewModel> {
     case loggedOut
@@ -20,7 +21,7 @@ protocol HomeViewModel: ObservableObject {
     associatedtype PowerHistoryViewModelType: PowerHistoryViewModel
 
     var userManager: UserManager { get }
-    var networkModel: TeslaApi { get }
+    var networkModel: TeslaApiProviding { get }
     var state: HomeViewModelState<PowerStatusViewModelType, PowerHistoryViewModelType> { get }
     var showSignIn: Bool { get set }
     var alert: AlertItem? { get set }
@@ -31,7 +32,7 @@ protocol HomeViewModel: ObservableObject {
 final class NetworkHomeViewModel: HomeViewModel {
     typealias State = HomeViewModelState<NetworkPowerStatusViewModel, NetworkPowerHistoryViewModel>
     let userManager = UserManager()
-    let networkModel: TeslaApi
+    let networkModel: TeslaApiProviding
     @Published private(set) var state: State
     @Published var showSignIn: Bool
     @Published var alert: AlertItem?
@@ -40,7 +41,7 @@ final class NetworkHomeViewModel: HomeViewModel {
 
     init() {
         UIApplication.shared.isIdleTimerDisabled = true
-        networkModel = TeslaApiNetworkModel(token: userManager.apiToken)
+        networkModel = TeslaApi(token: userManager.apiToken)
 
         if (userManager.isAuthenticated) {
             showSignIn = false
@@ -90,7 +91,7 @@ final class NetworkHomeViewModel: HomeViewModel {
         networkModel.refreshToken()
             .receive(on: DispatchQueue.main)
             .catch(handleError)
-            .map { token -> TeslaToken? in token } // this is stupid
+            .map { token -> Token? in token } // this is stupid
             .assign(to: \.apiToken, on: userManager)
             .store(in: &self.cancellables)
     }
@@ -118,7 +119,7 @@ final class NetworkHomeViewModel: HomeViewModel {
         } else {
             return networkModel.listProducts()
                 .tryMap { [weak self] products in
-                    guard let energySite = products.first(where: { $0 is TeslaEnergySite }) as? TeslaEnergySite else { throw Error.noEnergySitesFound }
+                    guard let energySite = products.first(where: { $0 is EnergySite }) as? EnergySite else { throw Error.noEnergySitesFound }
                     let site = (energySite.siteName, energySite.energySiteId)
                     self?.userManager.energySite = site
                     return site

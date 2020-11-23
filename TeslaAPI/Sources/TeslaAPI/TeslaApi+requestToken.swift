@@ -1,6 +1,6 @@
 //
 //  TeslaApi+requestToken.swift
-//  EnergyViewer
+//  TeslaApi
 //
 //  Created by peter bohac on 4/12/20.
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
@@ -9,9 +9,9 @@
 import Foundation
 import Combine
 
-extension TeslaApiNetworkModel {
+extension TeslaApi {
 
-    public func requestToken(for email: String, password: String) -> AnyPublisher<TeslaToken, Swift.Error> {
+    public func requestToken(for email: String, password: String) -> AnyPublisher<Token, Swift.Error> {
         let request: URLRequest = {
             var request = URLRequest(url: URL(string: "/oauth/token", relativeTo: Constants.baseUri)!)
             request.httpMethod = Constants.Method.post
@@ -23,7 +23,7 @@ extension TeslaApiNetworkModel {
         return urlSession.dataTaskPublisher(for: request)
             .tryMap(validateResponse)
             .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
-            .map(TeslaToken.init)
+            .map(Token.init)
             .handleEvents(receiveOutput: { token in self.token = token })
             .eraseToAnyPublisher()
     }

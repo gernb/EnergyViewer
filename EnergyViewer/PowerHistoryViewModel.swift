@@ -6,8 +6,9 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
+import TeslaAPI
 
 struct EnergyEndpoint: Identifiable, CustomStringConvertible {
     enum EndpointType: CustomStringConvertible {
@@ -103,14 +104,14 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     @Published var showGrid: Bool
     @Published private(set) var powerData: PowerData
 
-    @Published private var powerDataPoints: [TeslaTimePeriodPower] = []
+    @Published private var powerDataPoints: [TimePeriodPower] = []
     private let siteId: Int
     private let userManager: UserManager
-    private let networkModel: TeslaApi
+    private let networkModel: TeslaApiProviding
     private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    init(siteId: Int, userManager: UserManager, networkModel: TeslaApi) {
+    init(siteId: Int, userManager: UserManager, networkModel: TeslaApiProviding) {
         self.siteId = siteId
         self.userManager = userManager
         self.networkModel = networkModel
@@ -242,7 +243,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
             }
     }
 
-    private func parse(_ result: [TeslaTimePeriodEnergy]) -> EnergyTotal? {
+    private func parse(_ result: [TimePeriodEnergy]) -> EnergyTotal? {
         guard let data = result.first else { return nil }
 
         // House
@@ -289,7 +290,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
                            solarDestinations: solarDestinations)
     }
 
-    private func parse(data: [TeslaTimePeriodPower], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
+    private func parse(data: [TimePeriodPower], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
         var minValue: Double = 0
         var maxValue: Double = 0
         var batteryValues: [PowerData.SourceData.Value] = []

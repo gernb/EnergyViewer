@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import TeslaAPI
 
 final class UserManager: ObservableObject {
     private var keychain = Keychain()
     private var userDefaults = UserDefaults.standard
 
-    var apiToken: TeslaToken? {
+    var apiToken: Token? {
         get { keychain[Constants.tokenKey] }
         set {
             keychain[Constants.tokenKey] = newValue
@@ -46,7 +47,7 @@ final class UserManager: ObservableObject {
 
 private extension UserManager {
     enum Constants {
-        static let tokenKey = Keychain.Key<TeslaToken>(name: "ApiToken")
+        static let tokenKey = Keychain.Key<Token>(name: "ApiToken")
         static let energySiteKey = UserDefaults.Key<CodableEnergySite>(name: "EnergySite")
         static let energyGraphKey = UserDefaults.Key<CodableEnergyGraph>(name: "EnergyGraph")
     }

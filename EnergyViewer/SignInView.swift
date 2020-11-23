@@ -6,13 +6,14 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
+import TeslaAPI
 
 struct SignInView: View {
     @ObservedObject private var viewModel: SignInViewModel
 
-    init(userManager: UserManager, networkModel: TeslaApi) {
+    init(userManager: UserManager, networkModel: TeslaApiProviding) {
         viewModel = SignInViewModel(userManager: userManager, networkModel: networkModel)
     }
 
@@ -73,6 +74,6 @@ fileprivate extension HorizontalAlignment {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(userManager: UserManager(), networkModel: TeslaApiNetworkModel())
+        SignInView(userManager: UserManager(), networkModel: TeslaApi())
     }
 }

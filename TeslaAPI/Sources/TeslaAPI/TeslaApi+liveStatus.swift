@@ -1,6 +1,6 @@
 //
 //  TeslaApi+liveStatus.swift
-//  EnergyViewer
+//  TeslaApi
 //
 //  Created by peter bohac on 4/12/20.
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
@@ -9,9 +9,9 @@
 import Foundation
 import Combine
 
-extension TeslaApiNetworkModel {
+extension TeslaApi {
 
-    public func liveStatus(for siteId: Int) -> AnyPublisher<TeslaSiteStatus, Swift.Error> {
+    public func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error> {
         let request = URLRequest(url: URL(string: "/api/1/energy_sites/\(siteId)/live_status", relativeTo: Constants.baseUri)!)
 
         return authoriseRequest(request)
@@ -23,7 +23,7 @@ extension TeslaApiNetworkModel {
     }
 
     private struct Response: Decodable {
-        let response: TeslaSiteStatus
+        let response: SiteStatus
 
         static let decoder: JSONDecoder = {
             let decoder = JSONDecoder()
@@ -34,19 +34,19 @@ extension TeslaApiNetworkModel {
     }
 }
 
-public struct TeslaSiteStatus: Decodable {
-    let solarPower: Double
-    let energyLeft: Double
-    let totalPackEnergy: Double
-    let percentageCharged: Double
-    let batteryPower: Double
-    let loadPower: Double
-    let gridPower: Double
-    let gridServicesPower: Double
-    let generatorPower: Double
-    let gridStatus: String
-    let gridServicesActive: Bool
-    let backupCapable: Bool
-    let stormModeActive: Bool
-    let timestamp: Date
+public struct SiteStatus: Decodable {
+    public let solarPower: Double
+    public let energyLeft: Double
+    public let totalPackEnergy: Double
+    public let percentageCharged: Double
+    public let batteryPower: Double
+    public let loadPower: Double
+    public let gridPower: Double
+    public let gridServicesPower: Double
+    public let generatorPower: Double
+    public let gridStatus: String
+    public let gridServicesActive: Bool
+    public let backupCapable: Bool
+    public let stormModeActive: Bool
+    public let timestamp: Date
 }

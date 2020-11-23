@@ -1,22 +1,23 @@
 //
 //  TeslaApi.swift
-//  EnergyViewer
+//  TeslaApi
 //
 //  Created by peter bohac on 4/11/20.
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
-public protocol TeslaApi {
-    func requestToken(for email: String, password: String) -> AnyPublisher<TeslaToken, Swift.Error>
-    func refreshToken() -> AnyPublisher<TeslaToken, Swift.Error>
-    func listProducts() -> AnyPublisher<[TeslaProduct], Swift.Error>
-    func liveStatus(for siteId: Int) -> AnyPublisher<TeslaSiteStatus, Swift.Error>
-    func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<[TeslaTimePeriodPower], Swift.Error>
-    func energyHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date?) -> AnyPublisher<[TeslaTimePeriodEnergy], Swift.Error>
-    func selfConsumptionHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date?) -> AnyPublisher<[TeslaSelfConsumptionEnergy], Swift.Error>
+// Gleaned from: https://www.teslaapi.info
+public protocol TeslaApiProviding {
+    func requestToken(for email: String, password: String) -> AnyPublisher<Token, Swift.Error>
+    func refreshToken() -> AnyPublisher<Token, Swift.Error>
+    func listProducts() -> AnyPublisher<[Product], Swift.Error>
+    func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error>
+    func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<[TimePeriodPower], Swift.Error>
+    func energyHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<[TimePeriodEnergy], Swift.Error>
+    func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<[SelfConsumptionEnergy], Swift.Error>
 }
 
 public enum TeslaApiError: Swift.Error {
@@ -26,13 +27,12 @@ public enum TeslaApiError: Swift.Error {
     case decoding(String)
 }
 
-// Gleaned from: https://www.teslaapi.info
-public final class TeslaApiNetworkModel: TeslaApi {
+public final class TeslaApi: TeslaApiProviding {
     let urlSession: URLSession
-    var token: TeslaToken?
+    var token: Token?
     let tokenRefreshing = DispatchSemaphore(value: 1)
 
-    public init(urlSession: URLSession = URLSession.shared, token: TeslaToken? = nil) {
+    public init(urlSession: URLSession = URLSession.shared, token: Token? = nil) {
         self.urlSession = urlSession
         self.token = token
     }

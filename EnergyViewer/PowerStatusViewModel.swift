@@ -6,8 +6,9 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
+import TeslaAPI
 
 enum FlowState {
     case notInUse, consuming, exporting, generating, house
@@ -45,11 +46,11 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 
     private let siteId: Int
     private let userManager: UserManager
-    private let networkModel: TeslaApi
+    private let networkModel: TeslaApiProviding
     private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    init(siteId: Int, userManager: UserManager, networkModel: TeslaApi) {
+    init(siteId: Int, userManager: UserManager, networkModel: TeslaApiProviding) {
         self.siteId = siteId
         self.userManager = userManager
         self.networkModel = networkModel
@@ -95,7 +96,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
             }
     }
 
-    private func updateStatus(_ status: TeslaSiteStatus) {
+    private func updateStatus(_ status: SiteStatus) {
         // Battery
         batteryChargePercent = status.percentageCharged
         batteryChargeText = String(format: "%.0f%%", status.percentageCharged)

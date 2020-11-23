@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44B19249256B3D7E002443FB /* TeslaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 44B19248256B3D7E002443FB /* TeslaAPI */; };
 		44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B2EB13254A425F0001C4BF /* Keychain.swift */; };
 		44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D18C8124677575004BFFCD /* DatePickerView.swift */; };
 		44E4AB99254B00B30036BA73 /* EnergyViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E4AB98254B00B30036BA73 /* EnergyViewerApp.swift */; };
@@ -15,27 +16,21 @@
 		9090FEF8244283F3003175A3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF7244283F3003175A3 /* HomeView.swift */; };
 		9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEF9244283F4003175A3 /* Assets.xcassets */; };
 		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
-		9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0A244288AA003175A3 /* TeslaToken.swift */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
-		9090FF102442925D003175A3 /* TeslaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0F2442925D003175A3 /* TeslaApi.swift */; };
 		9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF112442B608003175A3 /* HomeViewModel.swift */; };
 		9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF13244361DC003175A3 /* SignInViewModel.swift */; };
 		9090FF1624436738003175A3 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1524436738003175A3 /* SignInView.swift */; };
 		9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1824437327003175A3 /* KeyboardDodging.swift */; };
 		9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1A24439691003175A3 /* UIViewWrapper.swift */; };
-		9090FF1D2443A994003175A3 /* TeslaApi+requestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */; };
-		9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */; };
-		9090FF212443AFA2003175A3 /* TeslaApi+listProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */; };
-		9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */; };
 		9090FF252444C08E003175A3 /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF242444C08E003175A3 /* AlertItem.swift */; };
 		9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */; };
 		9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF282444CCE4003175A3 /* PowerStatusView.swift */; };
-		9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */; };
 		9090FF2F24452E0F003175A3 /* PowerHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */; };
 		9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF3224452EEA003175A3 /* PowerHistoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44492C83256B35F4000A6F98 /* TeslaAPI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TeslaAPI; sourceTree = "<group>"; };
 		44B2EB13254A425F0001C4BF /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		44D18C8124677575004BFFCD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnergyViewer.entitlements; sourceTree = "<group>"; };
@@ -47,22 +42,15 @@
 		9090FEF9244283F4003175A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9090FEFF244283F4003175A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9090FF0A244288AA003175A3 /* TeslaToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaToken.swift; sourceTree = "<group>"; };
 		9090FF0D24428B80003175A3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
-		9090FF0F2442925D003175A3 /* TeslaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeslaApi.swift; sourceTree = "<group>"; };
 		9090FF112442B608003175A3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9090FF13244361DC003175A3 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		9090FF1524436738003175A3 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		9090FF1824437327003175A3 /* KeyboardDodging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDodging.swift; sourceTree = "<group>"; };
 		9090FF1A24439691003175A3 /* UIViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewWrapper.swift; sourceTree = "<group>"; };
-		9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+requestToken.swift"; sourceTree = "<group>"; };
-		9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+refreshToken.swift"; sourceTree = "<group>"; };
-		9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+listProducts.swift"; sourceTree = "<group>"; };
-		9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+liveStatus.swift"; sourceTree = "<group>"; };
 		9090FF242444C08E003175A3 /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
 		9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusViewModel.swift; sourceTree = "<group>"; };
 		9090FF282444CCE4003175A3 /* PowerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerStatusView.swift; sourceTree = "<group>"; };
-		9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeslaApi+calendarHistory.swift"; sourceTree = "<group>"; };
 		9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryViewModel.swift; sourceTree = "<group>"; };
 		9090FF3224452EEA003175A3 /* PowerHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHistoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,12 +60,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44B19249256B3D7E002443FB /* TeslaAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		44B19247256B3D7E002443FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		906EF38B24468153004E1537 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,7 +92,9 @@
 			isa = PBXGroup;
 			children = (
 				9090FEF2244283F3003175A3 /* EnergyViewer */,
+				44492C83256B35F4000A6F98 /* TeslaAPI */,
 				9090FEF1244283F3003175A3 /* Products */,
+				44B19247256B3D7E002443FB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,24 +121,9 @@
 				9090FF0D24428B80003175A3 /* UserManager.swift */,
 				9090FEF9244283F4003175A3 /* Assets.xcassets */,
 				906EF38B24468153004E1537 /* Helpers */,
-				9090FF0C24428AEA003175A3 /* Network */,
 				9090FF17244372A4003175A3 /* Support Files */,
 			);
 			path = EnergyViewer;
-			sourceTree = "<group>";
-		};
-		9090FF0C24428AEA003175A3 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				9090FF0F2442925D003175A3 /* TeslaApi.swift */,
-				9090FF2C24451D2A003175A3 /* TeslaApi+calendarHistory.swift */,
-				9090FF202443AFA2003175A3 /* TeslaApi+listProducts.swift */,
-				9090FF222443D4D3003175A3 /* TeslaApi+liveStatus.swift */,
-				9090FF1E2443AC04003175A3 /* TeslaApi+refreshToken.swift */,
-				9090FF1C2443A994003175A3 /* TeslaApi+requestToken.swift */,
-				9090FF0A244288AA003175A3 /* TeslaToken.swift */,
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		9090FF17244372A4003175A3 /* Support Files */ = {
@@ -170,6 +153,7 @@
 			);
 			name = EnergyViewer;
 			packageProductDependencies = (
+				44B19248256B3D7E002443FB /* TeslaAPI */,
 			);
 			productName = EnergyViewer;
 			productReference = 9090FEF0244283F3003175A3 /* EnergyViewer.app */;
@@ -231,25 +215,18 @@
 				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
 				9090FF1624436738003175A3 /* SignInView.swift in Sources */,
 				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
-				9090FF0B244288AA003175A3 /* TeslaToken.swift in Sources */,
 				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
 				44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */,
-				9090FF232443D4D3003175A3 /* TeslaApi+liveStatus.swift in Sources */,
 				9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */,
 				9090FF272444C82B003175A3 /* PowerStatusViewModel.swift in Sources */,
-				9090FF102442925D003175A3 /* TeslaApi.swift in Sources */,
 				906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */,
 				9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */,
-				9090FF1D2443A994003175A3 /* TeslaApi+requestToken.swift in Sources */,
 				44E4AB99254B00B30036BA73 /* EnergyViewerApp.swift in Sources */,
-				9090FF2D24451D2A003175A3 /* TeslaApi+calendarHistory.swift in Sources */,
 				9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */,
-				9090FF1F2443AC04003175A3 /* TeslaApi+refreshToken.swift in Sources */,
 				44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */,
 				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
 				9090FF0E24428B80003175A3 /* UserManager.swift in Sources */,
 				9090FEF8244283F3003175A3 /* HomeView.swift in Sources */,
-				9090FF212443AFA2003175A3 /* TeslaApi+listProducts.swift in Sources */,
 				9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +427,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		44B19248256B3D7E002443FB /* TeslaAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TeslaAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9090FEE8244283F3003175A3 /* Project object */;
 }

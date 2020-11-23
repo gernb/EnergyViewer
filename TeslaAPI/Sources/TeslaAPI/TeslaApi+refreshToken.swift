@@ -1,6 +1,6 @@
 //
 //  TeslaApi+refreshToken.swift
-//  EnergyViewer
+//  TeslaApi
 //
 //  Created by peter bohac on 4/12/20.
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
@@ -9,9 +9,9 @@
 import Foundation
 import Combine
 
-extension TeslaApiNetworkModel {
+extension TeslaApi {
 
-    public func refreshToken() -> AnyPublisher<TeslaToken, Swift.Error> {
+    public func refreshToken() -> AnyPublisher<Token, Swift.Error> {
         return Future<Void, Never> { promise in
             DispatchQueue.global().async {
                 self.tokenRefreshing.wait()
@@ -31,7 +31,7 @@ extension TeslaApiNetworkModel {
         }
         .tryMap(validateResponse)
         .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
-        .map(TeslaToken.init)
+        .map(Token.init)
         .handleEvents(receiveOutput: { token in self.token = token },
                       receiveCompletion: { _ in self.tokenRefreshing.signal() })
         .eraseToAnyPublisher()

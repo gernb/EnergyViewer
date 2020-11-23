@@ -1,6 +1,6 @@
 //
 //  TeslaApi+calendarHistory.swift
-//  EnergyViewer
+//  TeslaApi
 //
 //  Created by peter bohac on 4/13/20.
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
@@ -9,11 +9,11 @@
 import Foundation
 import Combine
 
-extension TeslaApiNetworkModel {
+extension TeslaApi {
 
     // MARK: - Power History
 
-    public func powerHistory(for siteId: Int, endDate: Date? = nil) -> AnyPublisher<[TeslaTimePeriodPower], Swift.Error> {
+    public func powerHistory(for siteId: Int, endDate: Date? = nil) -> AnyPublisher<[TimePeriodPower], Swift.Error> {
         let url: URL = {
             let url = URL(string: "/api/1/energy_sites/\(siteId)/calendar_history", relativeTo: Constants.baseUri)!
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -39,7 +39,7 @@ extension TeslaApiNetworkModel {
         struct Response: Decodable {
             let serialNumber: String
             let installationTimeZone: String
-            let timeSeries: [TeslaTimePeriodPower]
+            let timeSeries: [TimePeriodPower]
         }
 
         let response: Response
@@ -54,7 +54,7 @@ extension TeslaApiNetworkModel {
 
     // MARK: - Energy History
 
-    public func energyHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date? = nil) -> AnyPublisher<[TeslaTimePeriodEnergy], Swift.Error> {
+    public func energyHistory(for siteId: Int, period: TimePeriod, endDate: Date? = nil) -> AnyPublisher<[TimePeriodEnergy], Swift.Error> {
         let url: URL = {
             let url = URL(string: "/api/1/energy_sites/\(siteId)/calendar_history", relativeTo: Constants.baseUri)!
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -80,9 +80,9 @@ extension TeslaApiNetworkModel {
     fileprivate struct EnergyResponse: Decodable {
         struct Response: Decodable {
             let serialNumber: String
-            let period: TeslaTimePeriod
+            let period: TimePeriod
             let installationTimeZone: String
-            let timeSeries: [TeslaTimePeriodEnergy]
+            let timeSeries: [TimePeriodEnergy]
         }
 
         let response: Response
@@ -97,7 +97,7 @@ extension TeslaApiNetworkModel {
 
     // MARK: - Self Consumption History
 
-    public func selfConsumptionHistory(for siteId: Int, period: TeslaTimePeriod, endDate: Date? = nil) -> AnyPublisher<[TeslaSelfConsumptionEnergy], Swift.Error> {
+    public func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date? = nil) -> AnyPublisher<[SelfConsumptionEnergy], Swift.Error> {
         let url: URL = {
             let url = URL(string: "/api/1/energy_sites/\(siteId)/calendar_history", relativeTo: Constants.baseUri)!
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -122,9 +122,9 @@ extension TeslaApiNetworkModel {
 
     fileprivate struct SelfConsumptionResponse: Decodable {
         struct Response: Decodable {
-            let period: TeslaTimePeriod
+            let period: TimePeriod
             let timezone: String
-            let timeSeries: [TeslaSelfConsumptionEnergy]
+            let timeSeries: [SelfConsumptionEnergy]
         }
 
         let response: Response
@@ -139,43 +139,43 @@ extension TeslaApiNetworkModel {
 
 }
 
-public enum TeslaTimePeriod: String, Codable {
+public enum TimePeriod: String, Codable {
     case day, week, month, year, lifetime
 }
 
-public struct TeslaTimePeriodPower: Decodable {
-    let timestamp: Date
-    let solarPower: Double
-    let batteryPower: Double
-    let gridPower: Double
-    let gridServicesPower: Double
-    let generatorPower: Double
+public struct TimePeriodPower: Decodable {
+    public let timestamp: Date
+    public let solarPower: Double
+    public let batteryPower: Double
+    public let gridPower: Double
+    public let gridServicesPower: Double
+    public let generatorPower: Double
 }
 
-public struct TeslaTimePeriodEnergy: Decodable {
-    let timestamp: Date
-    let solarEnergyExported: Double
-    let generatorEnergyExported: Double
-    let gridEnergyImported: Double
-    let gridServicesEnergyImported: Double
-    let gridServicesEnergyExported: Double
-    let gridEnergyExportedFromSolar: Double
-    let gridEnergyExportedFromGenerator: Double
-    let gridEnergyExportedFromBattery: Double
-    let batteryEnergyExported: Double
-    let batteryEnergyImportedFromGrid: Double
-    let batteryEnergyImportedFromSolar: Double
-    let batteryEnergyImportedFromGenerator: Double
-    let consumerEnergyImportedFromGrid: Double
-    let consumerEnergyImportedFromSolar: Double
-    let consumerEnergyImportedFromBattery: Double
-    let consumerEnergyImportedFromGenerator: Double
+public struct TimePeriodEnergy: Decodable {
+    public let timestamp: Date
+    public let solarEnergyExported: Double
+    public let generatorEnergyExported: Double
+    public let gridEnergyImported: Double
+    public let gridServicesEnergyImported: Double
+    public let gridServicesEnergyExported: Double
+    public let gridEnergyExportedFromSolar: Double
+    public let gridEnergyExportedFromGenerator: Double
+    public let gridEnergyExportedFromBattery: Double
+    public let batteryEnergyExported: Double
+    public let batteryEnergyImportedFromGrid: Double
+    public let batteryEnergyImportedFromSolar: Double
+    public let batteryEnergyImportedFromGenerator: Double
+    public let consumerEnergyImportedFromGrid: Double
+    public let consumerEnergyImportedFromSolar: Double
+    public let consumerEnergyImportedFromBattery: Double
+    public let consumerEnergyImportedFromGenerator: Double
 }
 
-public struct TeslaSelfConsumptionEnergy: Decodable {
-    let timestamp: Date
-    let solar: Double
-    let battery: Double
+public struct SelfConsumptionEnergy: Decodable {
+    public let timestamp: Date
+    public let solar: Double
+    public let battery: Double
 }
 
 fileprivate extension Date {

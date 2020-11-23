@@ -6,8 +6,9 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
+import TeslaAPI
 
 final class SignInViewModel: ObservableObject {
     @Published var email: String
@@ -17,10 +18,10 @@ final class SignInViewModel: ObservableObject {
     @Published private(set) var errorMessage: String
 
     private let userManager: UserManager
-    private let networkModel: TeslaApi
+    private let networkModel: TeslaApiProviding
     private var cancellables = Set<AnyCancellable>()
 
-    init(userManager: UserManager, networkModel: TeslaApi) {
+    init(userManager: UserManager, networkModel: TeslaApiProviding) {
         self.userManager = userManager
         self.networkModel = networkModel
         self.email = ""

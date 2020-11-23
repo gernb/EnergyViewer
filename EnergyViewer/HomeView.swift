@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import TeslaAPI
 
 struct HomeView<ViewModel: HomeViewModel>: View {
     @ObservedObject var viewModel: ViewModel
@@ -76,15 +77,16 @@ struct HomeView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
                 HomeView(viewModel: PreviewHomeViewModel.loggedOut)
-                
+
                 HomeView(viewModel: PreviewHomeViewModel.loading)
-                
+
                 HomeView(viewModel: PreviewHomeViewModel.loggedIn)
-                
+
                 HomeView(viewModel: PreviewHomeViewModel.loggedInLoading)
             }
             .preferredColorScheme(colorScheme)
-            .previewDisplayName("\(colorScheme)")        }
+            .previewDisplayName("\(colorScheme)")
+        }
         .previewLayout(.fixed(width: 1024, height: 768)) // iPad mini @2x
 
     }
@@ -92,7 +94,7 @@ struct HomeView_Previews: PreviewProvider {
     final class PreviewHomeViewModel: HomeViewModel {
         typealias State = HomeViewModelState<PowerStatusView_Previews.PreviewPowerStatusViewModel, PowerHistoryView_Previews.PreviewPowerHistoryViewModel>
         var userManager = UserManager()
-        var networkModel: TeslaApi = TeslaApiNetworkModel()
+        var networkModel: TeslaApiProviding = TeslaApi()
         var state: State
         var showSignIn: Bool
         var alert: AlertItem?
