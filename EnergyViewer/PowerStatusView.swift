@@ -18,7 +18,8 @@ struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
                 HStack {
                     BatteryView(chargeLevel: viewModel.batteryChargePercent,
                                 chargeText: viewModel.batteryChargeText,
-                                subtitle: viewModel.batteryChargeSubtitle)
+                                subtitle: viewModel.batteryChargeSubtitle,
+                                gridIsOffline: viewModel.gridIsOffline)
                     ForEach(viewModel.sources) { source in
                         SourceView(viewModel: source)
                     }
@@ -45,6 +46,7 @@ struct BatteryView: View {
     let chargeLevel: Double
     let chargeText: String
     let subtitle: String
+    let gridIsOffline: Bool
 
     @Environment(\.colorScheme) var colorScheme
 
@@ -69,7 +71,7 @@ struct BatteryView: View {
             VStack {
                 Spacer()
                 Rectangle()
-                    .fill(Color.green)
+                    .fill(gridIsOffline ? Color.red : Color.green)
                     .frame(height: fillHeight)
             }
             .frame(height: 126)
@@ -77,7 +79,7 @@ struct BatteryView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.green, lineWidth: 4)
+                .stroke(gridIsOffline ? Color.red : Color.green, lineWidth: 4)
         )
     }
 }
@@ -119,7 +121,8 @@ struct PowerStatusView_Previews: PreviewProvider {
 
             PowerStatusView(viewModel: loadingState, showRawStatus: false)
 
-            BatteryView(chargeLevel: 50.0, chargeText: "50%", subtitle: "(15.1 / 27.0 kWh)")
+            BatteryView(chargeLevel: 50.0, chargeText: "50%", subtitle: "(15.1 / 27.0 kWh)", gridIsOffline: false)
+            BatteryView(chargeLevel: 50.0, chargeText: "50%", subtitle: "(15.1 / 27.0 kWh)", gridIsOffline: true)
 
             SourceView(viewModel: Source(id: "Battery",
                                          subtitle: "(charging)",
@@ -173,6 +176,7 @@ struct PowerStatusView_Previews: PreviewProvider {
                    powerInKW: 0,
                    state: .notInUse)
         ]
+        var gridIsOffline = false
         var rawStatus = "rawStatus"
     }
 }

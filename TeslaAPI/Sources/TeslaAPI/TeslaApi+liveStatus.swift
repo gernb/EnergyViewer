@@ -35,6 +35,11 @@ extension TeslaApi {
 }
 
 public struct SiteStatus: Decodable {
+    public enum GridStatus: String, Decodable {
+        case active = "Active"
+        case inactive = "Inactive"
+    }
+
     public let solarPower: Double
     public let energyLeft: Double
     public let totalPackEnergy: Double
@@ -44,7 +49,7 @@ public struct SiteStatus: Decodable {
     public let gridPower: Double
     public let gridServicesPower: Double
     public let generatorPower: Double
-    public let gridStatus: String
+    public let gridStatus: GridStatus
     public let gridServicesActive: Bool
     public let backupCapable: Bool
     public let stormModeActive: Bool

@@ -28,6 +28,7 @@ protocol PowerStatusViewModel: ObservableObject {
     var batteryChargePercent: Double { get }
     var batteryChargeText: String { get }
     var batteryChargeSubtitle: String { get }
+    var gridIsOffline: Bool { get }
     var rawStatus: String { get }
 }
 
@@ -41,6 +42,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
     @Published private(set) var batteryChargePercent: Double = 0
     @Published private(set) var batteryChargeText: String = ""
     @Published private(set) var batteryChargeSubtitle: String = ""
+    @Published private(set) var gridIsOffline: Bool = false
     @Published private(set) var rawStatus: String = "Loading..."
     @Published var alert: AlertItem?
 
@@ -169,6 +171,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
         }()
 
         sources = [batterySource, solarSource, houseSource, gridSource]
+        gridIsOffline = status.gridStatus == .inactive
         rawStatus = "\(status)"
 //        print("Updated at \(status.timestamp)")
     }

@@ -43,7 +43,7 @@ final class NetworkHomeViewModel: HomeViewModel {
         UIApplication.shared.isIdleTimerDisabled = true
         networkModel = TeslaApi(token: userManager.apiToken)
 
-        if (userManager.isAuthenticated) {
+        if userManager.isAuthenticated {
             showSignIn = false
             state = .loading
             loadData()
@@ -79,11 +79,12 @@ final class NetworkHomeViewModel: HomeViewModel {
     private func periodicallyRefreshToken() {
         Publishers.MergeMany(
             NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
-            NotificationCenter.default.publisher(for: .NSCalendarDayChanged))
-            .sink { [weak self] _ in
-                self?.refreshToken()
-            }
-            .store(in: &cancellables)
+            NotificationCenter.default.publisher(for: .NSCalendarDayChanged)
+        )
+        .sink { [weak self] _ in
+            self?.refreshToken()
+        }
+        .store(in: &cancellables)
     }
 
     private func refreshToken() {
