@@ -118,9 +118,9 @@ final class NetworkHomeViewModel: HomeViewModel {
                 .setFailureType(to: Swift.Error.self)
                 .eraseToAnyPublisher()
         } else {
-            return networkModel.listProducts()
-                .tryMap { [weak self] products in
-                    guard let energySite = products.first(where: { $0 is EnergySite }) as? EnergySite else { throw Error.noEnergySitesFound }
+            return networkModel.listEnergySites()
+                .tryMap { [weak self] energySites in
+                    guard let energySite = energySites.first else { throw Error.noEnergySitesFound }
                     let site = (energySite.siteName, energySite.energySiteId)
                     self?.userManager.energySite = site
                     return site

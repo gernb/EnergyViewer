@@ -86,3 +86,21 @@ public struct EnergySite: Product, Decodable {
     public let syncGridAlertEnabled: Bool
     public let breakerAlertEnabled: Bool
 }
+
+public extension TeslaApiProviding {
+    func listEnergySites() -> AnyPublisher<[EnergySite], Swift.Error> {
+        return listProducts()
+            .map { products in
+                products.compactMap { $0 as? EnergySite }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func listVehicles() -> AnyPublisher<[Vehicle], Swift.Error> {
+        return listProducts()
+            .map { products in
+                products.compactMap { $0 as? Vehicle }
+            }
+            .eraseToAnyPublisher()
+    }
+}
