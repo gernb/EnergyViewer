@@ -14,11 +14,9 @@ extension TeslaApi {
     public func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error> {
         let request = URLRequest(url: URL(string: "/api/1/energy_sites/\(siteId)/live_status", relativeTo: Constants.baseUri)!)
 
-        return authoriseRequest(request)
-            .flatMap { [urlSession] in urlSession.dataTaskPublisher(for: $0) }
-            .tryMap(validateResponse)
+        return authenticateAndPerform(request: request)
             .decode(type: Response.self, decoder: Response.decoder)
-            .map { $0.response }
+            .map(\.response)
             .eraseToAnyPublisher()
     }
 

@@ -20,7 +20,8 @@ public protocol TeslaApiProviding {
     func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<[SelfConsumptionEnergy], Swift.Error>
 }
 
-public enum TeslaApiError: Swift.Error {
+public enum TeslaApiError: Swift.Error, Equatable {
+    case notLoggedIn
     case invalidResponse
     case httpUnauthorised
     case httpError(code: Int)
@@ -29,31 +30,59 @@ public enum TeslaApiError: Swift.Error {
 
 public final class TeslaApi: TeslaApiProviding {
     let urlSession: URLSession
-    var token: Token?
-    let tokenRefreshing = DispatchSemaphore(value: 1)
+    var currentToken: Token?
+    let authQueue = DispatchQueue(label: "TeslaApi.AuthenticationQueue")
+    var tokenRefreshPublisher: AnyPublisher<Token, Swift.Error>?
 
     public init(urlSession: URLSession = URLSession.shared, token: Token? = nil) {
         self.urlSession = urlSession
-        self.token = token
+        self.currentToken = token
     }
 
-    func authoriseRequest(_ request: URLRequest) -> Future<URLRequest, URLError> {
-        return Future { [weak self] promise in
-            DispatchQueue.global().async {
-                guard let strongSelf = self else {
-                    promise(.success(request))
-                    return
-                }
-                strongSelf.tokenRefreshing.wait()
-                strongSelf.tokenRefreshing.signal()
-                var request = request
-                if let token = strongSelf.token {
-                    let value = String(format: Constants.authorisationValue, token.auth)
-                    request.addValue(value, forHTTPHeaderField: Constants.authorisationKey)
-                }
-                promise(.success(request))
+    func authToken(forceRefresh: Bool = false) -> AnyPublisher<Token, Swift.Error> {
+        return authQueue.sync { [weak self] in
+            if let publisher = self?.tokenRefreshPublisher {
+                return publisher
             }
+
+            guard let token = self?.currentToken else {
+                return Fail(error: TeslaApiError.notLoggedIn).eraseToAnyPublisher()
+            }
+
+            if token.isValid && !forceRefresh {
+                return Just(token)
+                    .setFailureType(to: Swift.Error.self)
+                    .eraseToAnyPublisher()
+            }
+
+            guard let publisher = self?.refreshAuthToken(token).share().eraseToAnyPublisher() else {
+                return Fail(error: TeslaApiError.notLoggedIn).eraseToAnyPublisher() // TODO: this is prolly not the ideal error here
+            }
+            self?.tokenRefreshPublisher = publisher
+            return publisher
         }
+    }
+
+    func authenticateAndPerform(request: URLRequest) -> AnyPublisher<Data, Swift.Error> {
+        return authToken()
+            .flatMap({ self.validatedDataPublisher(for: request, token: $0) })
+            .tryCatch({ error -> AnyPublisher<Data, Swift.Error> in
+                guard (error as? TeslaApiError) == TeslaApiError.httpUnauthorised else { throw error }
+                // Refresh and retry (one time) on auth error
+                return self.authToken(forceRefresh: true)
+                    .flatMap({ self.validatedDataPublisher(for: request, token: $0) })
+                    .eraseToAnyPublisher()
+            })
+            .eraseToAnyPublisher()
+    }
+
+    private func validatedDataPublisher(for request: URLRequest, token: Token) -> AnyPublisher<Data, Swift.Error> {
+        var request = request
+        let value = String(format: Constants.authorisationValue, token.auth)
+        request.addValue(value, forHTTPHeaderField: Constants.authorisationKey)
+        return urlSession.dataTaskPublisher(for: request)
+            .tryMap(validateResponse)
+            .eraseToAnyPublisher()
     }
 
     func validateResponse(data: Data, response: URLResponse) throws -> Data {

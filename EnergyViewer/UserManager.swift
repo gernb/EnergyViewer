@@ -21,10 +21,7 @@ final class UserManager: ObservableObject {
         }
     }
 
-    var isAuthenticated: Bool {
-        guard let apiToken = apiToken else { return false }
-        return apiToken.validUntil > Date().addingTimeInterval(10) // 10 seconds
-    }
+    var isAuthenticated: Bool { apiToken?.isValid ?? false }
 
     typealias EnergySite = (name: String, id: Int)
     var energySite: EnergySite? {

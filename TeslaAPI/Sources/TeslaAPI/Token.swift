@@ -12,6 +12,8 @@ public struct Token: Codable {
     public let auth: String
     public let refresh: String
     public let validUntil: Date
+
+    public var isValid: Bool { validUntil > Date().addingTimeInterval(10) } // provide a 10 second "buffer"
 }
 
 extension TeslaApi {
