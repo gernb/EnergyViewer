@@ -25,7 +25,7 @@ extension TeslaApi {
         }()
 
         return urlSession.dataTaskPublisher(for: request)
-            .tryMap(validateResponse)
+            .tryMap(Self.validateResponse)
             .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
             .map(Token.init)
             .handleEvents(receiveOutput: { token in self.currentToken = token },

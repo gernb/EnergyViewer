@@ -64,28 +64,27 @@ public final class TeslaApi: TeslaApiProviding {
     }
 
     func authenticateAndPerform(request: URLRequest) -> AnyPublisher<Data, Swift.Error> {
+        let dataTaskPublisher = { [urlSession] (token: Token) -> AnyPublisher<Data, Swift.Error> in
+            var request = request
+            let value = String(format: Constants.authorisationValue, token.auth)
+            request.addValue(value, forHTTPHeaderField: Constants.authorisationKey)
+            return urlSession.dataTaskPublisher(for: request)
+                .tryMap(Self.validateResponse)
+                .eraseToAnyPublisher()
+        }
         return authToken()
-            .flatMap({ self.validatedDataPublisher(for: request, token: $0) })
+            .flatMap(dataTaskPublisher)
             .tryCatch({ error -> AnyPublisher<Data, Swift.Error> in
-                guard (error as? TeslaApiError) == TeslaApiError.httpUnauthorised else { throw error }
+                guard (error as? TeslaApiError) == .httpUnauthorised else { throw error }
                 // Refresh and retry (one time) on auth error
                 return self.authToken(forceRefresh: true)
-                    .flatMap({ self.validatedDataPublisher(for: request, token: $0) })
+                    .flatMap(dataTaskPublisher)
                     .eraseToAnyPublisher()
             })
             .eraseToAnyPublisher()
     }
 
-    private func validatedDataPublisher(for request: URLRequest, token: Token) -> AnyPublisher<Data, Swift.Error> {
-        var request = request
-        let value = String(format: Constants.authorisationValue, token.auth)
-        request.addValue(value, forHTTPHeaderField: Constants.authorisationKey)
-        return urlSession.dataTaskPublisher(for: request)
-            .tryMap(validateResponse)
-            .eraseToAnyPublisher()
-    }
-
-    func validateResponse(data: Data, response: URLResponse) throws -> Data {
+    static func validateResponse(data: Data, response: URLResponse) throws -> Data {
         guard let response = response as? HTTPURLResponse else { throw TeslaApiError.invalidResponse }
         if 200 ..< 300 ~= response.statusCode {
             return data
