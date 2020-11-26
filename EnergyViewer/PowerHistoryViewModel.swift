@@ -210,8 +210,9 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
                 strongSelf.loadData(for: date)
                 strongSelf.canAdvanceDate = true
                 let formatter = DateFormatter()
-                formatter.dateStyle = .full
-                formatter.timeStyle = .none
+//                formatter.dateStyle = .full
+//                formatter.timeStyle = .none
+                formatter.dateFormat = "E, d MMM yyyy"
                 strongSelf.date = formatter.string(from: date)
             }
         }

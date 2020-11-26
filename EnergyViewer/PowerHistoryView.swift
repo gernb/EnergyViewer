@@ -12,6 +12,7 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     @Environment(\.colorScheme) var colorScheme
     @State private var showDatePicker: Bool = false
+    private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }
 
     var body: some View {
         GeometryReader { geometry in
@@ -29,7 +30,7 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                 }
 
                 VStack {
-                    HStack(spacing: 70) {
+                    HStack {
                         Button(action: { self.viewModel.previousDay() }) {
                             Text(" << ")
                                 .foregroundColor(self.colorScheme == .dark ? .white : .black)
@@ -37,8 +38,9 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                                 .padding()
                                 .overlay(Capsule().stroke(Color.gray, lineWidth: 2))
                         }
+                        Spacer()
                         Text(self.viewModel.date)
-                            .font(.title)
+                            .font(isPhone ? .title2 : .title)
                             .onTapGesture { self.showDatePicker = true }
                             .popover(isPresented: self.$showDatePicker, arrowEdge: .top) {
                                 DatePickerView(selectedDate: self.viewModel.currentDate) { date in
@@ -46,6 +48,7 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                                     self.showDatePicker = false
                                 }
                             }
+                        Spacer()
                         Button(action: { self.viewModel.nextDay() }) {
                             Text(" >> ")
                                 .foregroundColor(self.viewModel.canAdvanceDate ? (self.colorScheme == .dark ? .white : .black) : .clear)
@@ -53,7 +56,10 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                                 .padding()
                                 .overlay(Capsule().stroke(self.viewModel.canAdvanceDate ? Color.gray : Color.clear, lineWidth: 2))
                         }.disabled(!self.viewModel.canAdvanceDate)
-                    }.padding(.bottom)
+                    }
+                    .padding(.bottom)
+                    .frame(maxWidth: 600)
+
                     EnergyTotalsView(viewModel: self.viewModel)
                         .frame(minHeight: 75)
                     LineGraphView(data: LineGraphData(self.viewModel.powerData))
@@ -97,37 +103,51 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
 
 struct EnergyTotalsView<ViewModel: PowerHistoryViewModel>: View {
     @ObservedObject var viewModel: ViewModel
+    private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }
 
     var body: some View {
-        HStack(spacing: 9) {
-            ToggleButton(isOn: $viewModel.showBattery, colour: .green) {
-                VStack(spacing: 2) {
-                    HStack {
-                        Text("from:")
-                        Text(viewModel.energyTotal.fromBattery)
-                    }
-                    HStack {
-                        Text("to:")
-                        Text(viewModel.energyTotal.toBattery)
-                    }
+        if isPhone {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 150))],
+                      spacing: 9
+            ) {
+                content
+            }
+        } else {
+            HStack(spacing: 9) {
+                content
+            }
+        }
+    }
+
+    @ViewBuilder
+    var content: some View {
+        ToggleButton(isOn: $viewModel.showBattery, colour: .green) {
+            VStack(spacing: 2) {
+                HStack {
+                    Text("from:")
+                    Text(viewModel.energyTotal.fromBattery)
+                }
+                HStack {
+                    Text("to:")
+                    Text(viewModel.energyTotal.toBattery)
                 }
             }
-            ToggleButton(isOn: $viewModel.showSolar, colour: .yellow) {
-                Text(viewModel.energyTotal.solar)
-            }
-            ToggleButton(isOn: $viewModel.showHouse, colour: .blue) {
-                Text(viewModel.energyTotal.house)
-            }
-            ToggleButton(isOn: $viewModel.showGrid, colour: .gray) {
-                VStack(spacing: 2) {
-                    HStack {
-                        Text("from:")
-                        Text(viewModel.energyTotal.fromGrid)
-                    }
-                    HStack {
-                        Text("to:")
-                        Text(viewModel.energyTotal.toGrid)
-                    }
+        }
+        ToggleButton(isOn: $viewModel.showSolar, colour: .yellow) {
+            Text(viewModel.energyTotal.solar)
+        }
+        ToggleButton(isOn: $viewModel.showHouse, colour: .blue) {
+            Text(viewModel.energyTotal.house)
+        }
+        ToggleButton(isOn: $viewModel.showGrid, colour: .gray) {
+            VStack(spacing: 2) {
+                HStack {
+                    Text("from:")
+                    Text(viewModel.energyTotal.fromGrid)
+                }
+                HStack {
+                    Text("to:")
+                    Text(viewModel.energyTotal.toGrid)
                 }
             }
         }
@@ -227,7 +247,7 @@ struct PowerHistoryView_Previews: PreviewProvider {
                 PowerHistoryView(viewModel: PreviewPowerHistoryViewModel())
                 PowerHistoryView(viewModel: loadingState)
             }
-            .previewLayout(.fixed(width: 834, height: 900))
+//            .previewLayout(.fixed(width: 834, height: 900))
             .preferredColorScheme(.dark)
         }
     }

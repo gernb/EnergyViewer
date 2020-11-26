@@ -12,6 +12,9 @@ import TeslaAPI
 
 struct SignInView: View {
     @ObservedObject private var viewModel: SignInViewModel
+    private var textFieldWidth: CGFloat {
+        UIDevice.current.userInterfaceIdiom == .phone ? 250 : 400
+    }
 
     init(userManager: UserManager, networkModel: TeslaApiProviding) {
         viewModel = SignInViewModel(userManager: userManager, networkModel: networkModel)
@@ -25,14 +28,14 @@ struct SignInView: View {
                         .alignmentGuide(.equalWidths) { d in d[.trailing] }
                     TextField("", text: $viewModel.email)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(maxWidth: 400)
+                        .frame(maxWidth: textFieldWidth)
                 }
                 HStack {
                     Text("Password:")
                         .alignmentGuide(.equalWidths) { d in d[.trailing] }
                     SecureField("", text: $viewModel.password) { self.viewModel.login() }
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(maxWidth: 400)
+                        .frame(maxWidth: textFieldWidth)
                 }
             }
             Button(action: { self.viewModel.login() }) {

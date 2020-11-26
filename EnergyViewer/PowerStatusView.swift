@@ -11,18 +11,18 @@ import SwiftUI
 struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     let showRawStatus: Bool
+    private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }
 
     var body: some View {
         HStack {
             VStack(spacing: 5) {
-                HStack {
-                    BatteryView(chargeLevel: viewModel.batteryChargePercent,
-                                chargeText: viewModel.batteryChargeText,
-                                subtitle: viewModel.batteryChargeSubtitle,
-                                gridIsOffline: viewModel.gridIsOffline)
-                    ForEach(viewModel.sources) { source in
-                        SourceView(viewModel: source)
-                    }
+                if isPhone {
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: SourceView.width, maximum: SourceView.width))],
+                        alignment: .center
+                    ) { content }
+                } else {
+                    HStack { content }
                 }
                 if viewModel.stormModeActive {
                     Text("Storm Mode is Active")
@@ -44,6 +44,17 @@ struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
                   dismissButton: .cancel(Text(item.buttonText), action: item.action ?? {}))
         }
     }
+
+    @ViewBuilder
+    var content: some View {
+        BatteryView(chargeLevel: viewModel.batteryChargePercent,
+                    chargeText: viewModel.batteryChargeText,
+                    subtitle: viewModel.batteryChargeSubtitle,
+                    gridIsOffline: viewModel.gridIsOffline)
+        ForEach(viewModel.sources) { source in
+            SourceView(viewModel: source)
+        }
+    }
 }
 
 struct BatteryView: View {
@@ -55,22 +66,29 @@ struct BatteryView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var fillHeight: CGFloat {
-        return CGFloat(130.0 * chargeLevel / 100.0)
+        return Self.height * CGFloat(chargeLevel) / 100.0
+    }
+
+    static var height: CGFloat {
+        UIDevice.current.userInterfaceIdiom == .phone ? 100 : 130
+    }
+    static var font: Font {
+        UIDevice.current.userInterfaceIdiom == .phone ? .caption2 : .caption
     }
 
     var body: some View {
         VStack {
             Text("Battery Charge")
-                .font(.caption)
+                .font(Self.font)
             Spacer()
             Text(chargeText)
             Spacer()
             Text(subtitle)
-                .font(.caption)
+                .font(Self.font)
         }
         .foregroundColor(colorScheme == .dark ? .white : .black)
         .padding(5)
-        .frame(height: 126)
+        .frame(height: Self.height - 4)
         .background(
             VStack {
                 Spacer()
@@ -78,7 +96,7 @@ struct BatteryView: View {
                     .fill(gridIsOffline ? Color.red : Color.green)
                     .frame(height: fillHeight)
             }
-            .frame(height: 126)
+            .frame(height: Self.height - 4)
             .cornerRadius(10)
         )
         .overlay(
@@ -91,16 +109,30 @@ struct BatteryView: View {
 struct SourceView: View {
     let viewModel: Source
 
+    static var width: CGFloat {
+        UIDevice.current.userInterfaceIdiom == .phone ? 100 : 150
+    }
+    static var height: CGFloat {
+        UIDevice.current.userInterfaceIdiom == .phone ? 100 : 130
+    }
+    static var font: Font {
+        UIDevice.current.userInterfaceIdiom == .phone ? .title2 : .largeTitle
+    }
+    static var subtitleFont: Font {
+        UIDevice.current.userInterfaceIdiom == .phone ? .caption : .body
+    }
+
     var body: some View {
         VStack(spacing: 10) {
             Text(viewModel.id)
             Text(viewModel.textPower)
-                .font(.largeTitle)
+                .font(Self.font)
             Text(viewModel.subtitle)
+                .font(Self.subtitleFont)
         }
         .foregroundColor(.black)
         .padding(5)
-        .frame(width: 150, height: 130)
+        .frame(width: Self.width, height: Self.height)
         .background(viewModel.colour)
         .cornerRadius(10)
     }
