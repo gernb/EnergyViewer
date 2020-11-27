@@ -13,19 +13,36 @@ struct LineGraphView: View {
 
     @State private var isDragging = false
     @State private var dragLocation: CGPoint = .zero
+    @GestureState private var isLongPressing = false
+    @GestureState private var dragOffset = CGSize.zero
 
     private var gesture: some Gesture {
-        let dragGesture = DragGesture(minimumDistance: 0)
+        return LongPressGesture(minimumDuration: 0.5)
+            .updating($isLongPressing) { currentState, gestureState, transaction in
+                gestureState = currentState
+            }
+            .sequenced(before: DragGesture())
+            .updating($dragOffset, body: { value, gestureState, transaction in
+                switch value {
+                case .second(true, let drag):
+                    gestureState = drag?.translation ?? .zero
+                default:
+                    break
+                }
+            })
             .onChanged { value in
-                self.dragLocation = value.location
-                self.isDragging = true
+                switch value {
+                case .second(true, let drag):
+                    self.isDragging = true
+                    self.dragLocation = drag?.location ?? .zero
+                default:
+                    break
+                }
             }
             .onEnded { _ in
                 self.isDragging = false
                 self.dragLocation = .zero
             }
-        let pressGesture = LongPressGesture()
-        return pressGesture.sequenced(before: dragGesture)
     }
 
     var body: some View {
@@ -52,6 +69,7 @@ struct LineGraphView: View {
                 }
             }
             .contentShape(Rectangle())
+            .onTapGesture {} // this allows the scrollview to drag (https://stackoverflow.com/questions/57700396/adding-a-drag-gesture-in-swiftui-to-a-view-inside-a-scrollview-blocks-the-scroll)
             .gesture(self.gesture)
         }
         .padding(6)
