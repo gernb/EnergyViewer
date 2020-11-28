@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44AD06182572C3F7000B3811 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AD06172572C3F7000B3811 /* View+extensions.swift */; };
 		44B19249256B3D7E002443FB /* TeslaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 44B19248256B3D7E002443FB /* TeslaAPI */; };
 		44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B2EB13254A425F0001C4BF /* Keychain.swift */; };
 		44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D18C8124677575004BFFCD /* DatePickerView.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		44492C83256B35F4000A6F98 /* TeslaAPI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TeslaAPI; sourceTree = "<group>"; };
+		44AD06172572C3F7000B3811 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
 		44B2EB13254A425F0001C4BF /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		44D18C8124677575004BFFCD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnergyViewer.entitlements; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				906EF38E2446B709004E1537 /* LineGraphView.swift */,
 				906EF38C2446837A004E1537 /* PieChartView.swift */,
 				9090FF1A24439691003175A3 /* UIViewWrapper.swift */,
+				44AD06172572C3F7000B3811 /* View+extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
 				9090FF1624436738003175A3 /* SignInView.swift in Sources */,
 				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
+				44AD06182572C3F7000B3811 /* View+extensions.swift in Sources */,
 				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
 				44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */,
 				9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */,

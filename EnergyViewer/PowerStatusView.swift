@@ -12,15 +12,17 @@ struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     let showRawStatus: Bool
     private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }
+    private let maxWidth = 5 * SourceView.width + (4 * 8) // 5 items + 8pt between each item
 
     var body: some View {
         HStack {
             VStack(spacing: 5) {
                 if isPhone {
                     LazyVGrid(
-                        columns: [GridItem(.adaptive(minimum: SourceView.width, maximum: SourceView.width))],
+                        columns: [GridItem(.adaptive(minimum: SourceView.width))],
                         alignment: .center
                     ) { content }
+                    .frame(maxWidth: maxWidth)
                 } else {
                     HStack { content }
                 }
