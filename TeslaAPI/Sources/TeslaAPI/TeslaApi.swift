@@ -15,9 +15,9 @@ public protocol TeslaApiProviding {
     func refreshToken() -> AnyPublisher<Token, Swift.Error>
     func listProducts() -> AnyPublisher<[Product], Swift.Error>
     func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error>
-    func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<[TimePeriodPower], Swift.Error>
-    func energyHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<[TimePeriodEnergy], Swift.Error>
-    func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<[SelfConsumptionEnergy], Swift.Error>
+    func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<PowerHistory, Swift.Error>
+    func energyHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<EneryHistory, Swift.Error>
+    func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<SelfConsumptionHistory, Swift.Error>
 }
 
 public enum TeslaApiError: Swift.Error, Equatable {

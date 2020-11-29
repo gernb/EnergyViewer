@@ -104,10 +104,11 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     @Published var showGrid: Bool
     @Published private(set) var powerData: PowerData
 
-    @Published private var powerDataPoints: [TimePeriodPower] = []
+    @Published private var powerDataPoints: [PowerHistory.PowerEntry] = []
     private let siteId: Int
     private let userManager: UserManager
     private let networkModel: TeslaApiProviding
+    private var installationTimeZone: TimeZone = Calendar.current.timeZone
     private var timerCancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
 
@@ -221,9 +222,14 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
 
     private func loadData(for date: Date? = nil) {
         guard userManager.isAuthenticated else { return }
+        let date = date?.convertingToTimeZone(installationTimeZone)
         networkModel.energyHistory(for: siteId, period: .day, endDate: date)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
+            .handleEvents(receiveOutput: { energyHistory in
+                self.installationTimeZone = energyHistory.timeZone ?? Calendar.current.timeZone
+            })
+            .map(\.timeSeries)
             .compactMap(parse)
             .assign(to: \.energyTotal, on: self)
             .store(in: &cancellables)
@@ -231,6 +237,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
         networkModel.powerHistory(for: siteId, endDate: date)
             .receive(on: DispatchQueue.main)
             .catch(handleError)
+            .map(\.timeSeries)
             .assign(to: \.powerDataPoints, on: self)
             .store(in: &cancellables)
     }
@@ -244,7 +251,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
             }
     }
 
-    private func parse(_ result: [TimePeriodEnergy]) -> EnergyTotal? {
+    private func parse(_ result: [EneryHistory.EnergyEntry]) -> EnergyTotal? {
         guard let data = result.first else { return nil }
 
         // House
@@ -291,7 +298,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
                            solarDestinations: solarDestinations)
     }
 
-    private func parse(data: [TimePeriodPower], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
+    private func parse(data: [PowerHistory.PowerEntry], show: (battery: Bool, solar: Bool, house: Bool, grid: Bool)) -> PowerData {
         var minValue: Double = 0
         var maxValue: Double = 0
         var batteryValues: [PowerData.SourceData.Value] = []
@@ -343,5 +350,12 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     private enum Constants {
         static let refreshInterval: TimeInterval = 60
         static let dailyChartPoints: Int = (24 * 60) / 5 // power data points come in 5-min intervals
+    }
+}
+
+fileprivate extension Date {
+    func convertingToTimeZone(_ timeZone: TimeZone) -> Date {
+        let delta = TimeInterval(Calendar.current.timeZone.secondsFromGMT() - timeZone.secondsFromGMT())
+        return addingTimeInterval(delta)
     }
 }
