@@ -6,17 +6,18 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 extension TeslaApi {
 
-    public func requestToken(for email: String, password: String) -> AnyPublisher<Token, Swift.Error> {
+    func exchangeToken(_ oauthToken: String) -> AnyPublisher<Token, Swift.Error> {
         let request: URLRequest = {
             var request = URLRequest(url: URL(string: "/oauth/token", relativeTo: Constants.baseUri)!)
             request.httpMethod = Constants.Method.post
-            request.httpBody = try? Request.encoder.encode(Request(email: email, password: password))
+            request.httpBody = try? Request.encoder.encode(Request())
             request.addValue(Constants.jsonContent, forHTTPHeaderField: Constants.contentType)
+            request.addValue(String(format: Constants.authorisationValue, oauthToken), forHTTPHeaderField: Constants.authorisationKey)
             return request
         }()
 
@@ -29,11 +30,9 @@ extension TeslaApi {
     }
 
     fileprivate struct Request: Encodable {
-        let grantType = "password"
+        let grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer"
         let clientId = Constants.clientId
         let clientSecret = Constants.clientSecret
-        let email: String
-        let password: String
 
         static let encoder: JSONEncoder = {
             let encoder = JSONEncoder()
@@ -41,5 +40,4 @@ extension TeslaApi {
             return encoder
         }()
     }
-
 }

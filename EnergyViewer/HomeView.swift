@@ -10,7 +10,7 @@ import SwiftUI
 import TeslaAPI
 
 struct HomeView<ViewModel: HomeViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
 
     var body: some View {
         ContentView(viewModel: viewModel)
@@ -57,11 +57,10 @@ fileprivate struct ContentView<ViewModel: HomeViewModel>: View {
     }
 
     var loggedOutContent: some View {
-        Button(action: { self.viewModel.showSignIn.toggle() })  {
+        Button(action: { viewModel.login() })  {
             Text("Sign in")
-        }.sheet(isPresented: $viewModel.showSignIn) {
-            SignInView(userManager: self.viewModel.userManager, networkModel: self.viewModel.networkModel)
         }
+        .onAppear { viewModel.login() }
     }
 
     func loggedInContent<PowerStatusVM: PowerStatusViewModel, PowerHistoryVM: PowerHistoryViewModel>(siteName: String, powerStatusVM: PowerStatusVM, powerHistoryVM: PowerHistoryVM) -> some View {
@@ -115,17 +114,16 @@ struct HomeView_Previews: PreviewProvider {
         var userManager = UserManager()
         var networkModel: TeslaApiProviding = TeslaApi()
         var state: State
-        var showSignIn: Bool
         var alert: AlertItem?
 
-        init(state: State, showSignIn: Bool = false) {
+        init(state: State) {
             self.state = state
-            self.showSignIn = showSignIn
         }
 
+        func login() {}
         func logout() {}
 
-        static let loggedOut = PreviewHomeViewModel(state: .loggedOut, showSignIn: true)
+        static let loggedOut = PreviewHomeViewModel(state: .loggedOut)
         static let loading = PreviewHomeViewModel(state: .loading)
         static let loggedIn = PreviewHomeViewModel(state: .loggedIn(siteName: "Preview",
                                                     PowerStatusView_Previews.PreviewPowerStatusViewModel(),

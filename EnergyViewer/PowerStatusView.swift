@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PowerStatusView<ViewModel: PowerStatusViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     let showRawStatus: Bool
     private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }
     private let maxWidth = 5 * SourceView.width + (4 * 8) // 5 items + 8pt between each item

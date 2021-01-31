@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     @Environment(\.colorScheme) var colorScheme
     @State private var showDatePicker: Bool = false
     private var isPhone: Bool { UIDevice.current.userInterfaceIdiom == .phone }

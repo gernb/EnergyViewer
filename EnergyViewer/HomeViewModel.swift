@@ -23,9 +23,9 @@ protocol HomeViewModel: ObservableObject {
     var userManager: UserManager { get }
     var networkModel: TeslaApiProviding { get }
     var state: HomeViewModelState<PowerStatusViewModelType, PowerHistoryViewModelType> { get }
-    var showSignIn: Bool { get set }
     var alert: AlertItem? { get set }
 
+    func login()
     func logout()
 }
 
@@ -34,7 +34,6 @@ final class NetworkHomeViewModel: HomeViewModel {
     let userManager = UserManager()
     let networkModel: TeslaApiProviding
     @Published private(set) var state: State
-    @Published var showSignIn: Bool
     @Published var alert: AlertItem?
 
     private var cancellables = Set<AnyCancellable>()
@@ -44,16 +43,24 @@ final class NetworkHomeViewModel: HomeViewModel {
         networkModel = TeslaApi(token: userManager.apiToken)
 
         if userManager.isAuthenticated {
-            showSignIn = false
             state = .loading
             loadData()
         } else {
-            showSignIn = true
             state = .loggedOut
         }
 
         monitorForLogoutLogin()
-        periodicallyRefreshToken()
+//        periodicallyRefreshToken()
+    }
+
+    func login() {
+        networkModel.requestToken()
+            .receive(on: DispatchQueue.main)
+            .catch(handleError)
+            .sink { [weak self] token in
+                self?.userManager.apiToken = token
+            }
+            .store(in: &self.cancellables)
     }
 
     func logout() {
@@ -65,11 +72,9 @@ final class NetworkHomeViewModel: HomeViewModel {
             .sink { [weak self] in
                 guard let strongSelf = self else { return }
                 if strongSelf.userManager.isAuthenticated {
-                    strongSelf.showSignIn = false
                     strongSelf.state = .loading
                     strongSelf.loadData()
                 } else {
-                    strongSelf.showSignIn = true
                     strongSelf.state = .loggedOut
                 }
             }

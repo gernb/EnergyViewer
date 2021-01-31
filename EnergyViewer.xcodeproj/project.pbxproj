@@ -19,8 +19,6 @@
 		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
 		9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF112442B608003175A3 /* HomeViewModel.swift */; };
-		9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF13244361DC003175A3 /* SignInViewModel.swift */; };
-		9090FF1624436738003175A3 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1524436738003175A3 /* SignInView.swift */; };
 		9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1824437327003175A3 /* KeyboardDodging.swift */; };
 		9090FF1B24439691003175A3 /* UIViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1A24439691003175A3 /* UIViewWrapper.swift */; };
 		9090FF252444C08E003175A3 /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF242444C08E003175A3 /* AlertItem.swift */; };
@@ -46,8 +44,6 @@
 		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9090FF0D24428B80003175A3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9090FF112442B608003175A3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		9090FF13244361DC003175A3 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		9090FF1524436738003175A3 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		9090FF1824437327003175A3 /* KeyboardDodging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDodging.swift; sourceTree = "<group>"; };
 		9090FF1A24439691003175A3 /* UIViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewWrapper.swift; sourceTree = "<group>"; };
 		9090FF242444C08E003175A3 /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
@@ -119,8 +115,6 @@
 				9090FF2E24452E0F003175A3 /* PowerHistoryViewModel.swift */,
 				9090FF282444CCE4003175A3 /* PowerStatusView.swift */,
 				9090FF262444C82B003175A3 /* PowerStatusViewModel.swift */,
-				9090FF1524436738003175A3 /* SignInView.swift */,
-				9090FF13244361DC003175A3 /* SignInViewModel.swift */,
 				9090FF0D24428B80003175A3 /* UserManager.swift */,
 				9090FEF9244283F4003175A3 /* Assets.xcassets */,
 				906EF38B24468153004E1537 /* Helpers */,
@@ -216,7 +210,6 @@
 			files = (
 				9090FF2F24452E0F003175A3 /* PowerHistoryViewModel.swift in Sources */,
 				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
-				9090FF1624436738003175A3 /* SignInView.swift in Sources */,
 				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
 				44AD06182572C3F7000B3811 /* View+extensions.swift in Sources */,
 				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
@@ -228,7 +221,6 @@
 				44E4AB99254B00B30036BA73 /* EnergyViewerApp.swift in Sources */,
 				9090FF3324452EEA003175A3 /* PowerHistoryView.swift in Sources */,
 				44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */,
-				9090FF14244361DC003175A3 /* SignInViewModel.swift in Sources */,
 				9090FF0E24428B80003175A3 /* UserManager.swift in Sources */,
 				9090FEF8244283F3003175A3 /* HomeView.swift in Sources */,
 				9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */,
