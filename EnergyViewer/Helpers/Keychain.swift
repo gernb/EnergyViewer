@@ -24,7 +24,7 @@ struct Keychain {
 
     subscript<T: Codable>(_ key: Key<T>) -> T? {
         get {
-            try! object(for: key)
+            try? object(for: key)
         }
 
         set {

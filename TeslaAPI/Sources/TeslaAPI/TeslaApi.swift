@@ -7,9 +7,7 @@
 //
 
 import Combine
-import CryptoKit
-import OAuthSwift
-import WebKit
+import Foundation
 
 // Gleaned from: https://www.teslaapi.info
 public protocol TeslaApiProviding {
@@ -36,46 +34,9 @@ public final class TeslaApi: TeslaApiProviding {
     let authQueue = DispatchQueue(label: "TeslaApi.AuthenticationQueue")
     var tokenRefreshPublisher: AnyPublisher<Token, Swift.Error>?
 
-    private var cancellables = Set<AnyCancellable>()
-    private var oauthSwift: OAuth2Swift = {
-        let oauthSwift = OAuth2Swift(
-            consumerKey: "ownerapi",
-            consumerSecret: Constants.clientSecret,
-            authorizeUrl: "https://auth.tesla.com/oauth2/v3/authorize",
-            accessTokenUrl: "https://auth.tesla.com/oauth2/v3/token",
-            responseType: "code"
-        )
-        oauthSwift.authorizeURLHandler = WebViewController()
-        return oauthSwift
-    }()
-
     public init(urlSession: URLSession = URLSession.shared, token: Token? = nil) {
         self.urlSession = urlSession
         self.currentToken = token
-    }
-
-    public func requestToken() -> AnyPublisher<Token, Error> {
-        let codeVerifier = Data(Constants.clientId.utf8)
-            .compactMap { String(format: "%02x", $0) }
-            .joined()
-        let codeChallenge = SHA256.hash(data: Data(codeVerifier.utf8))
-            .compactMap { String(format: "%02x", $0) }
-            .joined()
-
-        return Future<OAuthSwift.TokenSuccess, OAuthSwiftError> { completion in
-            self.oauthSwift.authorize(withCallbackURL: "https://auth.tesla.com/void/callback",
-                                      scope: "openid email offline_access",
-                                      state: "state",
-                                      codeChallenge: codeChallenge,
-                                      codeVerifier: codeVerifier,
-                                      completionHandler: completion)
-        }
-        .mapError { error in
-            print(error)
-            return TeslaApiError.notLoggedIn
-        }
-        .flatMap { self.exchangeToken($0.credential.oauthToken) }
-        .eraseToAnyPublisher()
     }
 
     func authToken(forceRefresh: Bool = false) -> AnyPublisher<Token, Swift.Error> {
@@ -147,49 +108,5 @@ public final class TeslaApi: TeslaApiProviding {
 
         static let clientSecret = "c7257eb71a564034f9419ee651c7d0e5f7aa6bfbd18bafb5c5c033b093bb2fa3"
         static let clientId = "81527cff06843c8634fdc09e8ac0abefb46ac849f38fe1e431c2ef2106796384"
-    }
-
-    private final class WebViewController: OAuthWebViewController, WKNavigationDelegate {
-        let webView: WKWebView = {
-            let configuration = WKWebViewConfiguration()
-            configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-            let webView = WKWebView(frame: .zero, configuration: configuration)
-            return webView
-        }()
-
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            webView.navigationDelegate = self
-            webView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(self.webView)
-            webView.pinEdges(to: view)
-        }
-
-        override func handle(_ url: URL) {
-            super.handle(url)
-            let req = URLRequest(url: url)
-            DispatchQueue.main.async {
-                self.webView.load(req)
-            }
-        }
-
-        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            if let url = navigationAction.request.url, url.absoluteString.hasPrefix("https://auth.tesla.com/void/callback") {
-                decisionHandler(.cancel)
-                self.dismissWebViewController()
-                OAuthSwift.handle(url: url)
-                return
-            }
-            decisionHandler(.allow)
-        }
-    }
-}
-
-fileprivate extension UIView {
-    func pinEdges(to other: UIView) {
-        leadingAnchor.constraint(equalTo: other.leadingAnchor).isActive = true
-        trailingAnchor.constraint(equalTo: other.trailingAnchor).isActive = true
-        topAnchor.constraint(equalTo: other.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: other.bottomAnchor).isActive = true
     }
 }
