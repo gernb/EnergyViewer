@@ -37,7 +37,6 @@ extension TeslaApi {
             return code
         }
         .flatMap(convertCode)
-        .flatMap(exchangeToken)
         .eraseToAnyPublisher()
     }
 
@@ -47,7 +46,7 @@ extension TeslaApi {
         static let clientId = "ownerapi"
     }
 
-    fileprivate func convertCode(_ code: String) -> AnyPublisher<ConvertCodeResponse, Swift.Error> {
+    fileprivate func convertCode(_ code: String) -> AnyPublisher<Token, Swift.Error> {
         let request: URLRequest = {
             var request = URLRequest(url: URL(string: "/oauth2/v3/token", relativeTo: OAuthConstants.baseUri)!)
             request.httpMethod = Constants.Method.post
@@ -58,7 +57,11 @@ extension TeslaApi {
 
         return urlSession.dataTaskPublisher(for: request)
             .tryMap(Self.validateResponse)
-            .decode(type: ConvertCodeResponse.self, decoder: ConvertCodeResponse.decoder)
+            .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
+            .map(Token.init)
+            .handleEvents(receiveOutput: {
+                self.currentToken = $0
+            })
             .eraseToAnyPublisher()
     }
 
@@ -68,54 +71,6 @@ extension TeslaApi {
         let code: String
         let codeVerifier = Constants.clientId
         let redirectUri = OAuthConstants.redirectUri
-
-        static let encoder: JSONEncoder = {
-            let encoder = JSONEncoder()
-            encoder.keyEncodingStrategy = .convertToSnakeCase
-            return encoder
-        }()
-    }
-
-    fileprivate struct ConvertCodeResponse: Decodable {
-        let accessToken: String
-        let idToken: String
-        let refreshToken: String
-        let expiresIn: Int
-        let tokenType: String
-
-        static let decoder: JSONDecoder = {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            decoder.dateDecodingStrategy = .iso8601
-            return decoder
-        }()
-    }
-
-    fileprivate func exchangeToken(_ oauthResponse: ConvertCodeResponse) -> AnyPublisher<Token, Swift.Error> {
-        let request: URLRequest = {
-            var request = URLRequest(url: URL(string: "/oauth/token", relativeTo: Constants.baseUri)!)
-            request.httpMethod = Constants.Method.post
-            request.httpBody = try? ExchangeRequest.encoder.encode(ExchangeRequest())
-            request.addValue(Constants.jsonContent, forHTTPHeaderField: Constants.contentType)
-            request.addValue(String(format: Constants.authorisationValue, oauthResponse.accessToken), forHTTPHeaderField: Constants.authorisationKey)
-            return request
-        }()
-
-        return urlSession.dataTaskPublisher(for: request)
-            .tryMap(Self.validateResponse)
-            .decode(type: ApiTokenResponse.self, decoder: ApiTokenResponse.decoder)
-            .map(Token.init)
-            .handleEvents(receiveOutput: {
-                let token = Token(auth: $0.auth, refresh: oauthResponse.refreshToken, validUntil: $0.validUntil)
-                self.currentToken = token
-            })
-            .eraseToAnyPublisher()
-    }
-
-    fileprivate struct ExchangeRequest: Encodable {
-        let grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer"
-        let clientId = Constants.clientId
-        let clientSecret = Constants.clientSecret
 
         static let encoder: JSONEncoder = {
             let encoder = JSONEncoder()

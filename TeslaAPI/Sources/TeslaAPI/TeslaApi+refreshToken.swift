@@ -17,7 +17,7 @@ extension TeslaApi {
 
     func refreshAuthToken(_ token: Token) -> AnyPublisher<Token, Swift.Error> {
         let request: URLRequest = {
-            var request = URLRequest(url: URL(string: "/oauth/token", relativeTo: Constants.baseUri)!)
+            var request = URLRequest(url: URL(string: "/oauth2/v3/token", relativeTo: OAuthConstants.baseUri)!)
             request.httpMethod = Constants.Method.post
             request.httpBody = try? Request.encoder.encode(Request(refreshToken: token.refresh))
             request.addValue(Constants.jsonContent, forHTTPHeaderField: Constants.contentType)
@@ -35,15 +35,20 @@ extension TeslaApi {
 
     fileprivate struct Request: Encodable {
         let grantType = "refresh_token"
-        let clientId = Constants.clientId
-        let clientSecret = Constants.clientSecret
+        let clientId = OAuthConstants.clientId
         let refreshToken: String
+        let scope = "openid email offline_access"
 
         static let encoder: JSONEncoder = {
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
             return encoder
         }()
+    }
+
+    fileprivate enum OAuthConstants {
+        static let baseUri = URL(string: "https://auth.tesla.com/")!
+        static let clientId = "ownerapi"
     }
 
 }

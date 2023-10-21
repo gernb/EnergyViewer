@@ -22,7 +22,6 @@ extension TeslaApi {
         let tokenType: String
         let expiresIn: Double
         let refreshToken: String
-        let createdAt: Date
 
         static let decoder: JSONDecoder = {
             let decoder = JSONDecoder()
@@ -37,6 +36,6 @@ extension Token {
     init(response: TeslaApi.ApiTokenResponse) {
         self.init(auth: response.accessToken,
                   refresh: response.refreshToken,
-                  validUntil: response.createdAt.addingTimeInterval(response.expiresIn))
+                  validUntil: Date.now.addingTimeInterval(response.expiresIn))
     }
 }

@@ -50,7 +50,7 @@ final class NetworkHomeViewModel: HomeViewModel {
         }
 
         monitorForLogoutLogin()
-//        periodicallyRefreshToken()
+        periodicallyRefreshToken()
     }
 
     func login() {
