@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		444BE2FE2AEB2CCA00D624C5 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444BE2FD2AEB2CCA00D624C5 /* Logging.swift */; };
 		44AD06182572C3F7000B3811 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AD06172572C3F7000B3811 /* View+extensions.swift */; };
 		44B19249256B3D7E002443FB /* TeslaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 44B19248256B3D7E002443FB /* TeslaAPI */; };
 		44B2EB14254A425F0001C4BF /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B2EB13254A425F0001C4BF /* Keychain.swift */; };
@@ -16,7 +17,6 @@
 		906EF38F2446B709004E1537 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906EF38E2446B709004E1537 /* LineGraphView.swift */; };
 		9090FEF8244283F3003175A3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FEF7244283F3003175A3 /* HomeView.swift */; };
 		9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEF9244283F4003175A3 /* Assets.xcassets */; };
-		9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */; };
 		9090FF0E24428B80003175A3 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF0D24428B80003175A3 /* UserManager.swift */; };
 		9090FF122442B608003175A3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF112442B608003175A3 /* HomeViewModel.swift */; };
 		9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090FF1824437327003175A3 /* KeyboardDodging.swift */; };
@@ -30,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		44492C83256B35F4000A6F98 /* TeslaAPI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TeslaAPI; sourceTree = "<group>"; };
+		444BE2FD2AEB2CCA00D624C5 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		44AD06172572C3F7000B3811 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
 		44B2EB13254A425F0001C4BF /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		44D18C8124677575004BFFCD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		9090FEF0244283F3003175A3 /* EnergyViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnergyViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9090FEF7244283F3003175A3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9090FEF9244283F4003175A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9090FEFF244283F4003175A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9090FF01244283F4003175A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9090FF0D24428B80003175A3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9090FF112442B608003175A3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -80,6 +80,7 @@
 				9090FF1824437327003175A3 /* KeyboardDodging.swift */,
 				44B2EB13254A425F0001C4BF /* Keychain.swift */,
 				906EF38E2446B709004E1537 /* LineGraphView.swift */,
+				444BE2FD2AEB2CCA00D624C5 /* Logging.swift */,
 				906EF38C2446837A004E1537 /* PieChartView.swift */,
 				9090FF1A24439691003175A3 /* UIViewWrapper.swift */,
 				44AD06172572C3F7000B3811 /* View+extensions.swift */,
@@ -128,7 +129,6 @@
 			children = (
 				44E4AB95254A774A0036BA73 /* EnergyViewer.entitlements */,
 				9090FF01244283F4003175A3 /* Info.plist */,
-				9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -162,8 +162,9 @@
 		9090FEE8244283F3003175A3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "1dot0 Solutions";
 				TargetAttributes = {
 					9090FEEF244283F3003175A3 = {
@@ -196,7 +197,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9090FF00244283F4003175A3 /* LaunchScreen.storyboard in Resources */,
 				9090FEFA244283F4003175A3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,6 +212,7 @@
 				9090FF292444CCE4003175A3 /* PowerStatusView.swift in Sources */,
 				9090FF252444C08E003175A3 /* AlertItem.swift in Sources */,
 				44AD06182572C3F7000B3811 /* View+extensions.swift in Sources */,
+				444BE2FE2AEB2CCA00D624C5 /* Logging.swift in Sources */,
 				906EF38D2446837A004E1537 /* PieChartView.swift in Sources */,
 				44D18C8224677575004BFFCD /* DatePickerView.swift in Sources */,
 				9090FF1924437327003175A3 /* KeyboardDodging.swift in Sources */,
@@ -229,22 +230,12 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		9090FEFE244283F4003175A3 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9090FEFF244283F4003175A3 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		9090FF02244283F4003175A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -278,6 +269,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -306,6 +298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -339,6 +332,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -366,7 +360,7 @@
 				DEVELOPMENT_TEAM = XB7GA2R58L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -388,7 +382,7 @@
 				DEVELOPMENT_TEAM = XB7GA2R58L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "EnergyViewer/Support Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -62,8 +62,9 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
 
                     EnergyTotalsView(viewModel: self.viewModel)
                         .frame(minHeight: 75)
+                        .frame(maxWidth: 400)
                     LineGraphView(data: LineGraphData(self.viewModel.powerData))
-                        .frame(maxWidth: geometry.size.width > 1050 ? .infinity : 750)
+//                        .frame(maxWidth: geometry.size.width > 1050 ? .infinity : 799)
 
                     if geometry.size.width <= 1000 {
                         HStack {

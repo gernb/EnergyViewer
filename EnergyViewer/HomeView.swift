@@ -68,9 +68,9 @@ fileprivate struct ContentView<ViewModel: HomeViewModel>: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button(action: { self.viewModel.logout() }) {
-                        Text("Logout")
-                    }.padding(.trailing)
+                    Button("Refresh") { self.viewModel.refreshToken() }
+                    Button("Logout") { self.viewModel.logout() }
+                        .padding(.horizontal)
                 }
                 Spacer()
             }
@@ -87,6 +87,11 @@ fileprivate struct ContentView<ViewModel: HomeViewModel>: View {
                 }
             }
         }
+//        .task {
+//            try? await Task.sleep(for: .seconds(15))
+//            print("Posing NSCalendarDayChanged")
+//            NotificationCenter.default.post(name: .NSCalendarDayChanged, object: nil)
+//        }
     }
 }
 
@@ -106,7 +111,6 @@ struct HomeView_Previews: PreviewProvider {
             .previewDisplayName("\(colorScheme)")
         }
 //        .previewLayout(.fixed(width: 1024, height: 768)) // iPad mini @2x
-
     }
 
     final class PreviewHomeViewModel: HomeViewModel {
@@ -122,6 +126,7 @@ struct HomeView_Previews: PreviewProvider {
 
         func login() {}
         func logout() {}
+        func refreshToken() {}
 
         static let loggedOut = PreviewHomeViewModel(state: .loggedOut)
         static let loading = PreviewHomeViewModel(state: .loading)

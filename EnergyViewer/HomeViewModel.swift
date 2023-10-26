@@ -7,6 +7,7 @@
 //
 
 import Combine
+import OSLog
 import TeslaAPI
 import UIKit
 
@@ -27,6 +28,7 @@ protocol HomeViewModel: ObservableObject {
 
     func login()
     func logout()
+    func refreshToken()
 }
 
 final class NetworkHomeViewModel: HomeViewModel {
@@ -67,6 +69,16 @@ final class NetworkHomeViewModel: HomeViewModel {
         userManager.logout()
     }
 
+    func refreshToken() {
+        guard userManager.isAuthenticated else { return }
+        networkModel.refreshToken()
+            .receive(on: DispatchQueue.main)
+            .catch(handleError)
+            .map { token -> Token? in token } // this is stupid
+            .assign(to: \.apiToken, on: userManager)
+            .store(in: &self.cancellables)
+    }
+
     private func monitorForLogoutLogin() {
         userManager.objectWillChange
             .sink { [weak self] in
@@ -90,16 +102,6 @@ final class NetworkHomeViewModel: HomeViewModel {
             self?.refreshToken()
         }
         .store(in: &cancellables)
-    }
-
-    private func refreshToken() {
-        guard userManager.isAuthenticated else { return }
-        networkModel.refreshToken()
-            .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .map { token -> Token? in token } // this is stupid
-            .assign(to: \.apiToken, on: userManager)
-            .store(in: &self.cancellables)
     }
 
     private func loadData() {
@@ -135,6 +137,7 @@ final class NetworkHomeViewModel: HomeViewModel {
     }
 
     private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
+        Logger.default.error("\(String(describing: error), privacy: .public)")
         switch error {
         case TeslaApiError.httpUnauthorised:
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
