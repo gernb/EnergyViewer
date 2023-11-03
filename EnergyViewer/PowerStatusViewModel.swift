@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import OSLog
 import TeslaAPI
 
 enum FlowState {
@@ -64,9 +65,6 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 
     private func beginMonitoring() {
         monitorForLogout()
-
-        guard userManager.isAuthenticated else { return }
-
         fetchStatus()
         pollForNewData()
     }
@@ -85,10 +83,12 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
     private func fetchStatus() {
         networkModel.liveStatus(for: siteId)
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .sink { [weak self] status in
-                self?.updateStatus(status)
-            }
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { [weak self] status in
+                    self?.updateStatus(status)
+                }
+            )
             .store(in: &cancellables)
     }
 
@@ -179,16 +179,16 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
 //        print("Updated at \(status.timestamp)")
     }
 
-    private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
-        switch error {
-        case TeslaApiError.httpUnauthorised:
+    private func handleCompletion<E: Swift.Error>(_ completion: Subscribers.Completion<E>) {
+        guard case .failure(let error) = completion else { return }
+        Logger.default.error("[NetworkPowerStatusViewModel.handleCompletion] \(String(describing: error), privacy: .public)")
+        if let teslaApiError = error as? TeslaApiError, teslaApiError == .httpUnauthorised {
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }
-        default:
+        } else {
             alert = AlertItem(title: "Error", text: "\(error)", buttonText: "Ok", action: nil)
         }
-        return Empty(completeImmediately: true)
     }
 
     private enum Constants {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OSLog
 import TeslaAPI
 
 final class UserManager: ObservableObject {
@@ -16,6 +17,11 @@ final class UserManager: ObservableObject {
     var apiToken: Token? {
         get { keychain[Constants.tokenKey] }
         set {
+            if newValue == nil {
+                Logger.default.warning("[UserManager.apiToken] is being set to nil")
+            } else {
+                Logger.default.error("[UserManager.apiToken] new token is valid until: \(newValue!.validUntil.formatted(), privacy: .public)")
+            }
             keychain[Constants.tokenKey] = newValue
             objectWillChange.send()
         }

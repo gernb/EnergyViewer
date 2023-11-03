@@ -14,11 +14,13 @@ let package = Package(
     products: [
         .library(
             name: "TeslaAPI",
-            targets: ["TeslaAPI"]),
+            targets: ["TeslaAPI"]
+        ),
     ],
     targets: [
         .target(
             name: "TeslaAPI",
-            dependencies: []),
+            dependencies: []
+        ),
     ]
 )

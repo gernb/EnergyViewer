@@ -41,7 +41,7 @@ fileprivate struct KeyboardDodging: ViewModifier {
                 self.keyboardFrame = keyboardFrame
                 self.overlap = 2 *  self.contentFrame.intersection(self.keyboardFrame).height
             }
-            .animation(.easeOut(duration: 0.16))
+            .animation(.easeOut(duration: 0.16), value: overlap)
     }
 }
 

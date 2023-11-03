@@ -8,6 +8,11 @@
 
 import Combine
 import Foundation
+import OSLog
+
+extension Logger {
+    static let `default` = Self(subsystem: "TeslaApi", category: "default")
+}
 
 // Gleaned from: https://www.teslaapi.info
 public protocol TeslaApiProviding {
@@ -30,13 +35,19 @@ public enum TeslaApiError: Swift.Error, Equatable {
 
 public final class TeslaApi: TeslaApiProviding {
     let urlSession: URLSession
-    var currentToken: Token?
+    var currentToken: Token? {
+        didSet {
+            didUpdateToken(currentToken)
+        }
+    }
     let authQueue = DispatchQueue(label: "TeslaApi.AuthenticationQueue")
     var tokenRefreshPublisher: AnyPublisher<Token, Swift.Error>?
+    let didUpdateToken: (Token?) -> Void
 
-    public init(urlSession: URLSession = URLSession.shared, token: Token? = nil) {
+    public init(urlSession: URLSession = URLSession.shared, token: Token? = nil, onDidUpdateToken: @escaping (Token?) -> Void = { _ in }) {
         self.urlSession = urlSession
         self.currentToken = token
+        self.didUpdateToken = onDidUpdateToken
     }
 
     func authToken(forceRefresh: Bool = false) -> AnyPublisher<Token, Swift.Error> {
@@ -46,6 +57,7 @@ public final class TeslaApi: TeslaApiProviding {
             }
 
             guard let token = self?.currentToken else {
+                Logger.default.error("[authToken()] self is nil or no currentToken")
                 return Fail(error: TeslaApiError.notLoggedIn).eraseToAnyPublisher()
             }
 
@@ -56,6 +68,7 @@ public final class TeslaApi: TeslaApiProviding {
             }
 
             guard let publisher = self?.refreshAuthToken(token).share().eraseToAnyPublisher() else {
+                Logger.default.error("[authToken()] self is nil or unable to get refreshAuthToken publisher")
                 return Fail(error: TeslaApiError.notLoggedIn).eraseToAnyPublisher() // TODO: this is prolly not the ideal error here
             }
             self?.tokenRefreshPublisher = publisher
@@ -76,6 +89,7 @@ public final class TeslaApi: TeslaApiProviding {
             .flatMap(dataTaskPublisher)
             .tryCatch({ error -> AnyPublisher<Data, Swift.Error> in
                 guard (error as? TeslaApiError) == .httpUnauthorised else { throw error }
+                Logger.default.info("[authenticateAndPerform] received httpUnauthorised; retrying...")
                 // Refresh and retry (one time) on auth error
                 return self.authToken(forceRefresh: true)
                     .flatMap(dataTaskPublisher)
@@ -85,12 +99,17 @@ public final class TeslaApi: TeslaApiProviding {
     }
 
     static func validateResponse(data: Data, response: URLResponse) throws -> Data {
-        guard let response = response as? HTTPURLResponse else { throw TeslaApiError.invalidResponse }
+        guard let response = response as? HTTPURLResponse else {
+            Logger.default.warning("[validateResponse] received invalid response")
+            throw TeslaApiError.invalidResponse
+        }
         if 200 ..< 300 ~= response.statusCode {
             return data
         } else if response.statusCode == 401 {
+            Logger.default.warning("[validateResponse] received error code 401 (unauthorized)")
             throw TeslaApiError.httpUnauthorised
         } else {
+            Logger.default.warning("[validateResponse] received error code \(response.statusCode, privacy: .public)")
             throw TeslaApiError.httpError(code: response.statusCode)
         }
     }

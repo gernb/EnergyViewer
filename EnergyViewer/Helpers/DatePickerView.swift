@@ -170,7 +170,7 @@ fileprivate struct MonthAndYearPickerView: View {
             GeometryReader { geometry in
                 HStack {
                     Picker(selection: self.$selectedMonth, label: EmptyView()) {
-                        ForEach(self.calendar.monthSymbols.indices) { month in
+                        ForEach(self.calendar.monthSymbols.indices, id: \.self) { month in
                             Text(self.calendar.monthSymbols[month])
                         }
                     }

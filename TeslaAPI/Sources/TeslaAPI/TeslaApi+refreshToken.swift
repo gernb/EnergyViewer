@@ -6,8 +6,8 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 extension TeslaApi {
 

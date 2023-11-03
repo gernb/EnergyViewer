@@ -42,7 +42,10 @@ final class NetworkHomeViewModel: HomeViewModel {
 
     init() {
         UIApplication.shared.isIdleTimerDisabled = true
-        networkModel = TeslaApi(token: userManager.apiToken)
+        networkModel = TeslaApi(token: userManager.apiToken, onDidUpdateToken: { [userManager] token in
+            Logger.default.info("[NetworkHomeViewModel.onDidUpdateToken] token valid until: \(token?.validUntil.formatted() ?? "nil", privacy: .public)")
+            userManager.apiToken = token
+        })
 
         if userManager.isAuthenticated {
             state = .loading
@@ -58,10 +61,10 @@ final class NetworkHomeViewModel: HomeViewModel {
     func login() {
         networkModel.requestToken()
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .sink { [weak self] token in
-                self?.userManager.apiToken = token
-            }
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { _ in }
+            )
             .store(in: &self.cancellables)
     }
 
@@ -70,17 +73,18 @@ final class NetworkHomeViewModel: HomeViewModel {
     }
 
     func refreshToken() {
-        guard userManager.isAuthenticated else { return }
         networkModel.refreshToken()
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .map { token -> Token? in token } // this is stupid
-            .assign(to: \.apiToken, on: userManager)
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { _ in }
+            )
             .store(in: &self.cancellables)
     }
 
     private func monitorForLogoutLogin() {
         userManager.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 guard let strongSelf = self else { return }
                 if strongSelf.userManager.isAuthenticated {
@@ -99,23 +103,24 @@ final class NetworkHomeViewModel: HomeViewModel {
             NotificationCenter.default.publisher(for: .NSCalendarDayChanged)
         )
         .sink { [weak self] _ in
+            Logger.default.info("[NetworkHomeViewModel.periodicallyRefreshToken] refreshing the auth token")
             self?.refreshToken()
         }
         .store(in: &cancellables)
     }
 
     private func loadData() {
-        guard userManager.isAuthenticated else { return }
         getSiteInfo()
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .compactMap { [weak self] site -> State? in
-                guard let strongSelf = self else { return nil }
-                let powerStatusVM = NetworkPowerStatusViewModel(siteId: site.id, userManager: strongSelf.userManager, networkModel: strongSelf.networkModel)
-                let powerHistoryVM = NetworkPowerHistoryViewModel(siteId: site.id, userManager: strongSelf.userManager, networkModel: strongSelf.networkModel)
-                return .loggedIn(siteName: site.name, powerStatusVM, powerHistoryVM)
-            }
-            .assign(to: \.state, on: self)
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { [weak self] site in
+                    guard let self else { return }
+                    let powerStatusVM = NetworkPowerStatusViewModel(siteId: site.id, userManager: self.userManager, networkModel: self.networkModel)
+                    let powerHistoryVM = NetworkPowerHistoryViewModel(siteId: site.id, userManager: self.userManager, networkModel: self.networkModel)
+                    self.state = .loggedIn(siteName: site.name, powerStatusVM, powerHistoryVM)
+                }
+            )
             .store(in: &self.cancellables)
     }
 
@@ -136,17 +141,16 @@ final class NetworkHomeViewModel: HomeViewModel {
         }
     }
 
-    private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
-        Logger.default.error("\(String(describing: error), privacy: .public)")
-        switch error {
-        case TeslaApiError.httpUnauthorised:
+    private func handleCompletion<E: Swift.Error>(_ completion: Subscribers.Completion<E>) {
+        guard case .failure(let error) = completion else { return }
+        Logger.default.error("[NetworkHomeViewModel.handleCompletion] \(String(describing: error), privacy: .public)")
+        if let teslaApiError = error as? TeslaApiError, teslaApiError == .httpUnauthorised {
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }
-        default:
+        } else {
             alert = AlertItem(title: "Error", text: "\(error)", buttonText: "Ok", action: nil)
         }
-        return Empty(completeImmediately: true)
     }
 
     private enum Error: Swift.Error {

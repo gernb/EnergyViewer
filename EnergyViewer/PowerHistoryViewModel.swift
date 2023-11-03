@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import OSLog
 import TeslaAPI
 
 struct EnergyEndpoint: Identifiable, CustomStringConvertible {
@@ -166,6 +167,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
             .sink { [weak self] in
                 guard let strongSelf = self else { return }
                 if !strongSelf.userManager.isAuthenticated {
+                    Logger.default.warning("[NetworkPowerHistoryViewModel.monitorForLogout] user not authenticated; cancelling timer")
                     strongSelf.timerCancellable = nil
                 }
             }
@@ -188,6 +190,7 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
         NotificationCenter.default.publisher(for: .NSCalendarDayChanged)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
+                Logger.default.info("[NetworkPowerHistoryViewModel.monitorForDayChanged] date changed")
                 self?.currentDate = Date()
             }
             .store(in: &cancellables)
@@ -221,29 +224,31 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     }
 
     private func loadData(for date: Date? = nil) {
-        guard userManager.isAuthenticated else { return }
         let date = date?.convertingToTimeZone(installationTimeZone)
         networkModel.energyHistory(for: siteId, period: .day, endDate: date)
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .handleEvents(receiveOutput: { energyHistory in
-                self.installationTimeZone = energyHistory.timeZone ?? Calendar.current.timeZone
-            })
-            .map(\.timeSeries)
-            .compactMap(parse)
-            .assign(to: \.energyTotal, on: self)
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { [weak self] energyHistory in
+                    guard let self else { return }
+                    self.installationTimeZone = energyHistory.timeZone ?? Calendar.current.timeZone
+                    self.energyTotal = self.parse(energyHistory.timeSeries) ?? self.energyTotal
+                }
+            )
             .store(in: &cancellables)
 
         networkModel.powerHistory(for: siteId, endDate: date)
             .receive(on: DispatchQueue.main)
-            .catch(handleError)
-            .map(\.timeSeries)
-            .assign(to: \.powerDataPoints, on: self)
+            .sink(
+                receiveCompletion: handleCompletion,
+                receiveValue: { [weak self] powerHistory in
+                    self?.powerDataPoints = powerHistory.timeSeries
+                }
+            )
             .store(in: &cancellables)
     }
 
     private func pollForNewData() {
-        guard userManager.isAuthenticated else { return }
         timerCancellable = Timer.publish(every: Constants.refreshInterval, on: .main, in: .default)
             .autoconnect()
             .sink { [weak self] _ in
@@ -335,16 +340,16 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
         return PowerData(sources: sources, rangeMax: Constants.dailyChartPoints, maxValue: maxValue, minValue: minValue)
     }
 
-    private func handleError<T>(_ error: Swift.Error) -> Empty<T, Never> {
-        switch error {
-        case TeslaApiError.httpUnauthorised:
+    private func handleCompletion<E: Swift.Error>(_ completion: Subscribers.Completion<E>) {
+        guard case .failure(let error) = completion else { return }
+        Logger.default.error("[NetworkPowerHistoryViewModel.handleCompletion] \(String(describing: error), privacy: .public)")
+        if let teslaApiError = error as? TeslaApiError, teslaApiError == .httpUnauthorised {
             alert = AlertItem(title: "Error", text: "You have been logged out.", buttonText: "Ok") { [userManager] in
                 userManager.logout()
             }
-        default:
+        } else {
             alert = AlertItem(title: "Error", text: "\(error)", buttonText: "Ok", action: nil)
         }
-        return Empty(completeImmediately: true)
     }
 
     private enum Constants {

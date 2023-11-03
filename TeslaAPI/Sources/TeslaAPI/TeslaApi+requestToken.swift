@@ -97,7 +97,10 @@ extension TeslaApi {
             self.completion = completion
             let req = URLRequest(url: url)
             DispatchQueue.main.async {
-                UIApplication.shared.windows.first?.rootViewController?.present(self, animated: true)
+                UIApplication.shared
+                    .connectedScenes.compactMap { $0 as? UIWindowScene }.first?
+                    .windows.first?.rootViewController?
+                    .present(self, animated: true)
                 self.webView.load(req)
             }
         }
