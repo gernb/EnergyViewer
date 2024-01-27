@@ -6,6 +6,7 @@
 //  Copyright © 2020 1dot0 Solutions. All rights reserved.
 //
 
+import CryptoKit
 import Combine
 import Foundation
 import UIKit
@@ -13,13 +14,18 @@ import WebKit
 
 extension TeslaApi {
     public func requestToken() -> AnyPublisher<Token, Error> {
+        let codeVerifier = randomCodeVerifier()
+        let codeChallenge = codeChallenge(using: codeVerifier)
         let url: URL = {
             let url = URL(string: "/oauth2/v3/authorize", relativeTo: OAuthConstants.baseUri)!
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             components.queryItems = [
                 URLQueryItem(name: "client_id", value: OAuthConstants.clientId),
                 URLQueryItem(name: "redirect_uri", value: OAuthConstants.redirectUri),
+                URLQueryItem(name: "code_challenge", value: codeChallenge),
+                URLQueryItem(name: "code_challenge_method", value: "S256"),
                 URLQueryItem(name: "response_type", value: "code"),
+                URLQueryItem(name: "login_hint", value: "peter@1dot0.net"), // TODO: remove this
                 URLQueryItem(name: "scope", value: "openid email offline_access")
             ]
             return components.url!
@@ -36,7 +42,7 @@ extension TeslaApi {
             }
             return code
         }
-        .flatMap(convertCode)
+        .flatMap { self.convertCode($0, codeVerifier: codeVerifier) }
         .eraseToAnyPublisher()
     }
 
@@ -46,11 +52,27 @@ extension TeslaApi {
         static let clientId = "ownerapi"
     }
 
-    fileprivate func convertCode(_ code: String) -> AnyPublisher<Token, Swift.Error> {
+    private static let characterSet = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+//    private static let characterSet = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+    fileprivate func randomCodeVerifier() -> String {
+        (1 ... 64).map { _ in
+            String(Self.characterSet.randomElement()!)
+        }.joined()
+    }
+    fileprivate func codeChallenge(using verifier: String) -> String {
+        let hashed = SHA256.hash(data: Data(verifier.utf8))
+        return Data(hashed)
+            .base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
+
+    fileprivate func convertCode(_ code: String, codeVerifier: String) -> AnyPublisher<Token, Swift.Error> {
         let request: URLRequest = {
             var request = URLRequest(url: URL(string: "/oauth2/v3/token", relativeTo: OAuthConstants.baseUri)!)
             request.httpMethod = Constants.Method.post
-            request.httpBody = try? ConvertCodeRequest.encoder.encode(ConvertCodeRequest(code: code))
+            request.httpBody = try? ConvertCodeRequest.encoder.encode(ConvertCodeRequest(code: code, codeVerifier: codeVerifier))
             request.addValue(Constants.jsonContent, forHTTPHeaderField: Constants.contentType)
             return request
         }()
@@ -69,7 +91,7 @@ extension TeslaApi {
         let grantType = "authorization_code"
         let clientId = OAuthConstants.clientId
         let code: String
-        let codeVerifier = Constants.clientId
+        let codeVerifier: String
         let redirectUri = OAuthConstants.redirectUri
 
         static let encoder: JSONEncoder = {
