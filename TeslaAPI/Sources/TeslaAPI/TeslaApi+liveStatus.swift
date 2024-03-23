@@ -11,7 +11,7 @@ import Combine
 
 extension TeslaApi {
 
-    public func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error> {
+    public func liveStatus(for siteId: Int) -> AnyPublisher<LiveStatus, Swift.Error> {
         let request = URLRequest(url: URL(string: "/api/1/energy_sites/\(siteId)/live_status", relativeTo: Constants.baseUri)!)
 
         return authenticateAndPerform(request: request)
@@ -21,7 +21,7 @@ extension TeslaApi {
     }
 
     private struct Response: Decodable {
-        let response: SiteStatus
+        let response: LiveStatus
 
         static let decoder: JSONDecoder = {
             let decoder = JSONDecoder()
@@ -32,15 +32,13 @@ extension TeslaApi {
     }
 }
 
-public struct SiteStatus: Decodable {
+public struct LiveStatus: Decodable {
     public enum GridStatus: String, Decodable {
         case active = "Active"
         case inactive = "Inactive"
     }
 
     public let solarPower: Double
-    public let energyLeft: Double
-    public let totalPackEnergy: Double
     public let percentageCharged: Double
     public let batteryPower: Double
     public let loadPower: Double

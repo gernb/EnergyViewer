@@ -14,12 +14,13 @@ extension Logger {
     static let `default` = Self(subsystem: "TeslaApi", category: "default")
 }
 
-// Gleaned from: https://www.teslaapi.info
+// Gleaned from: https://tesla-api.timdorr.com/
 public protocol TeslaApiProviding {
     func requestToken() -> AnyPublisher<Token, Swift.Error>
     func refreshToken() -> AnyPublisher<Token, Swift.Error>
     func listProducts() -> AnyPublisher<[Product], Swift.Error>
-    func liveStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error>
+    func liveStatus(for siteId: Int) -> AnyPublisher<LiveStatus, Swift.Error>
+    func siteStatus(for siteId: Int) -> AnyPublisher<SiteStatus, Swift.Error>
     func powerHistory(for siteId: Int, endDate: Date?) -> AnyPublisher<PowerHistory, Swift.Error>
     func energyHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<EneryHistory, Swift.Error>
     func selfConsumptionHistory(for siteId: Int, period: TimePeriod, endDate: Date?) -> AnyPublisher<SelfConsumptionHistory, Swift.Error>

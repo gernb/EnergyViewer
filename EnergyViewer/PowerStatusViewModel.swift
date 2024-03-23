@@ -86,7 +86,7 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
             .sink(
                 receiveCompletion: handleCompletion,
                 receiveValue: { [weak self] status in
-                    self?.updateStatus(status)
+                    self?.updateLiveStatus(status)
                 }
             )
             .store(in: &cancellables)
@@ -100,11 +100,11 @@ final class NetworkPowerStatusViewModel: PowerStatusViewModel {
             }
     }
 
-    private func updateStatus(_ status: SiteStatus) {
+    private func updateLiveStatus(_ status: LiveStatus) {
         // Battery
         batteryChargePercent = status.percentageCharged
         batteryChargeText = String(format: "%.0f%%", status.percentageCharged)
-        batteryChargeSubtitle = String(format: "(%.1f / %.1f kWh)", status.energyLeft / 1000, status.totalPackEnergy / 1000)
+//        batteryChargeSubtitle = String(format: "(%.1f / %.1f kWh)", status.energyLeft / 1000, status.totalPackEnergy / 1000)
         let batterySource: Source = {
             let power = status.batteryPower / 1000
             let textPower = String(format: "%.1f kW", abs(status.batteryPower / 1000))

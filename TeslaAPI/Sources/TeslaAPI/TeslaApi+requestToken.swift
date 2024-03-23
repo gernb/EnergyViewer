@@ -25,7 +25,6 @@ extension TeslaApi {
                 URLQueryItem(name: "code_challenge", value: codeChallenge),
                 URLQueryItem(name: "code_challenge_method", value: "S256"),
                 URLQueryItem(name: "response_type", value: "code"),
-                URLQueryItem(name: "login_hint", value: "peter@1dot0.net"), // TODO: remove this
                 URLQueryItem(name: "scope", value: "openid email offline_access")
             ]
             return components.url!
@@ -53,7 +52,6 @@ extension TeslaApi {
     }
 
     private static let characterSet = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
-//    private static let characterSet = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
     fileprivate func randomCodeVerifier() -> String {
         (1 ... 64).map { _ in
             String(Self.characterSet.randomElement()!)
