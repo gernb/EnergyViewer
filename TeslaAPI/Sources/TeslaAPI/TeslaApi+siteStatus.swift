@@ -15,10 +15,10 @@ extension TeslaApi {
         let request = URLRequest(url: URL(string: "/api/1/energy_sites/\(siteId)/site_status", relativeTo: Constants.baseUri)!)
 
         return authenticateAndPerform(request: request)
-            .map { data -> Data in
-                print(String(data: data, encoding: .utf8)!)
-                return data
-            }
+//            .map { data -> Data in
+//                print(String(data: data, encoding: .utf8)!)
+//                return data
+//            }
             .decode(type: Response.self, decoder: Response.decoder)
             .map(\.response)
             .eraseToAnyPublisher()

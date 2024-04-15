@@ -257,13 +257,14 @@ final class NetworkPowerHistoryViewModel: PowerHistoryViewModel {
     }
 
     private func parse(_ result: [EneryHistory.EnergyEntry]) -> EnergyTotal? {
-        guard let data = result.first else { return nil }
+        let data = result.reduce(.zero, +)
 
         // House
-        let houseTotal = data.consumerEnergyImportedFromGrid
-            + data.consumerEnergyImportedFromSolar
-            + data.consumerEnergyImportedFromBattery
-            + data.consumerEnergyImportedFromGenerator
+//        let houseTotal = data.consumerEnergyImportedFromGrid
+//            + data.consumerEnergyImportedFromSolar
+//            + data.consumerEnergyImportedFromBattery
+//            + data.consumerEnergyImportedFromGenerator
+        let houseTotal = data.totalHomeUsage
         let house = String(format: "%.1f kWh", houseTotal / 1000)
         let houseSources = [
             EnergyEndpoint(isSource: true, endpointType: .solar, percentage: 100.0 * data.consumerEnergyImportedFromSolar / houseTotal, kWh: data.consumerEnergyImportedFromSolar / 1000),

@@ -28,6 +28,10 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authenticateAndPerform(request: request)
+//            .map { data -> Data in
+//                print(String(data: data, encoding: .utf8)!)
+//                return data
+//            }
             .decode(type: PowerResponse.self, decoder: PowerResponse.decoder)
             .map(\.response)
             .eraseToAnyPublisher()
@@ -62,6 +66,10 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authenticateAndPerform(request: request)
+//            .map { data -> Data in
+//                print(String(data: data, encoding: .utf8)!)
+//                return data
+//            }
             .decode(type: EnergyResponse.self, decoder: EnergyResponse.decoder)
             .map(\.response)
             .eraseToAnyPublisher()
@@ -96,6 +104,10 @@ extension TeslaApi {
         let request = URLRequest(url: url)
 
         return authenticateAndPerform(request: request)
+//            .map { data -> Data in
+//                print(String(data: data, encoding: .utf8)!)
+//                return data
+//            }
             .decode(type: SelfConsumptionResponse.self, decoder: SelfConsumptionResponse.decoder)
             .map(\.response)
             .eraseToAnyPublisher()
@@ -161,6 +173,10 @@ public struct EneryHistory: Decodable {
         public let consumerEnergyImportedFromSolar: Double
         public let consumerEnergyImportedFromBattery: Double
         public let consumerEnergyImportedFromGenerator: Double
+        public let rawTimestamp: Date
+        public let totalHomeUsage: Double
+        public let totalBatteryDischarge: Double?
+        public let totalGridEnergyExported: Double?
     }
 }
 
@@ -175,6 +191,58 @@ public struct SelfConsumptionHistory: Decodable {
         public let timestamp: Date
         public let solar: Double
         public let battery: Double
+    }
+}
+
+public extension EneryHistory.EnergyEntry {
+    static let zero = Self(
+        timestamp: .now,
+        solarEnergyExported: 0,
+        generatorEnergyExported: 0,
+        gridEnergyImported: 0,
+        gridServicesEnergyImported: 0,
+        gridServicesEnergyExported: 0,
+        gridEnergyExportedFromSolar: 0,
+        gridEnergyExportedFromGenerator: 0,
+        gridEnergyExportedFromBattery: 0,
+        batteryEnergyExported: 0,
+        batteryEnergyImportedFromGrid: 0,
+        batteryEnergyImportedFromSolar: 0,
+        batteryEnergyImportedFromGenerator: 0,
+        consumerEnergyImportedFromGrid: 0,
+        consumerEnergyImportedFromSolar: 0,
+        consumerEnergyImportedFromBattery: 0,
+        consumerEnergyImportedFromGenerator: 0,
+        rawTimestamp: .now,
+        totalHomeUsage: 0,
+        totalBatteryDischarge: 0,
+        totalGridEnergyExported: 0
+    )
+
+    static func + (lhs: Self, rhs: Self) -> Self {
+        .init(
+            timestamp: rhs.timestamp,
+            solarEnergyExported: lhs.solarEnergyExported + rhs.solarEnergyExported,
+            generatorEnergyExported: lhs.generatorEnergyExported + rhs.generatorEnergyExported,
+            gridEnergyImported: lhs.gridEnergyImported + rhs.gridEnergyImported,
+            gridServicesEnergyImported: lhs.gridServicesEnergyImported + rhs.gridServicesEnergyImported,
+            gridServicesEnergyExported: lhs.gridServicesEnergyExported + rhs.gridServicesEnergyExported,
+            gridEnergyExportedFromSolar: lhs.gridEnergyExportedFromSolar + rhs.gridEnergyExportedFromSolar,
+            gridEnergyExportedFromGenerator: lhs.gridEnergyExportedFromGenerator + rhs.gridEnergyExportedFromGenerator,
+            gridEnergyExportedFromBattery: lhs.gridEnergyExportedFromBattery + rhs.gridEnergyExportedFromBattery,
+            batteryEnergyExported: lhs.batteryEnergyExported + rhs.batteryEnergyExported,
+            batteryEnergyImportedFromGrid: lhs.batteryEnergyImportedFromGrid + rhs.batteryEnergyImportedFromGrid,
+            batteryEnergyImportedFromSolar: lhs.batteryEnergyImportedFromSolar + rhs.batteryEnergyImportedFromSolar,
+            batteryEnergyImportedFromGenerator: lhs.batteryEnergyImportedFromGenerator + rhs.batteryEnergyImportedFromGenerator,
+            consumerEnergyImportedFromGrid: lhs.consumerEnergyImportedFromGrid + rhs.consumerEnergyImportedFromGrid,
+            consumerEnergyImportedFromSolar: lhs.consumerEnergyImportedFromSolar + rhs.consumerEnergyImportedFromSolar,
+            consumerEnergyImportedFromBattery: lhs.consumerEnergyImportedFromBattery + rhs.consumerEnergyImportedFromBattery,
+            consumerEnergyImportedFromGenerator: lhs.consumerEnergyImportedFromGenerator + rhs.consumerEnergyImportedFromGenerator,
+            rawTimestamp: rhs.rawTimestamp,
+            totalHomeUsage: lhs.totalHomeUsage + rhs.totalHomeUsage,
+            totalBatteryDischarge: (lhs.totalBatteryDischarge ?? 0) + (rhs.totalBatteryDischarge ?? 0),
+            totalGridEnergyExported: (lhs.totalGridEnergyExported ?? 0) + (rhs.totalGridEnergyExported ?? 0)
+        )
     }
 }
 

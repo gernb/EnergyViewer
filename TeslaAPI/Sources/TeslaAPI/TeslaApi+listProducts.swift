@@ -15,6 +15,10 @@ extension TeslaApi {
         let request = URLRequest(url: URL(string: "/api/1/products", relativeTo: Constants.baseUri)!)
 
         return authenticateAndPerform(request: request)
+//            .map { data -> Data in
+//                print(String(data: data, encoding: .utf8)!)
+//                return data
+//            }
             .decode(type: Response.self, decoder: Response.decoder)
             .map(\.response)
             .eraseToAnyPublisher()
@@ -77,14 +81,34 @@ public struct EnergySite: Product, Decodable {
     public let siteName: String
     public let id: String
     public let gatewayId: String
-    public let energyLeft: Double
-    public let totalPackEnergy: Double
+    public let assetSiteId: String
+    public let warpSiteNumber: String
+//    public let energyLeft: Double
+//    public let totalPackEnergy: Double
     public let percentageCharged: Double
     public let batteryType: String
     public let backupCapable: Bool
     public let batteryPower: Double
+    public let stormModeEnabled: Bool
     public let syncGridAlertEnabled: Bool
     public let breakerAlertEnabled: Bool
+    /*
+     "go_off_grid_test_banner_enabled": null,
+     "powerwall_onboarding_settings_set": true,
+     "powerwall_tesla_electric_interested_in": null,
+     "vpp_tour_enabled": null,
+     "components": {
+       "battery": true,
+       "battery_type": "ac_powerwall",
+       "solar": true,
+       "grid": true,
+       "load_meter": true,
+       "market_type": "residential"
+     },
+     "features": {
+       "rate_plan_manager_no_pricing_constraint": true
+     }
+     */
 }
 
 public extension TeslaApiProviding {
