@@ -44,7 +44,7 @@ public struct SiteStatus: Decodable {
 //    public let totalPackEnergy: Double
     public let percentageCharged: Double
     public let batteryType: String
-    public let backupCapable: Bool
+//    public let backupCapable: Bool
     public let batteryPower: Double
     public let stormModeEnabled: Bool
     public let powerwallOnboardingSettingsSet: Bool

@@ -47,11 +47,11 @@ public struct LiveStatus: Decodable {
     public let batteryPower: Double
     public let loadPower: Double
     public let gridPower: Double
-    public let gridServicesPower: Double
+//    public let gridServicesPower: Double
     public let generatorPower: Double
     public let gridStatus: GridStatus
     public let gridServicesActive: Bool
-    public let backupCapable: Bool
+//    public let backupCapable: Bool
     public let stormModeActive: Bool
     public let timestamp: Date
 }
