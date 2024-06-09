@@ -174,7 +174,7 @@ public struct EneryHistory: Decodable {
         public let consumerEnergyImportedFromBattery: Double
         public let consumerEnergyImportedFromGenerator: Double
         public let rawTimestamp: Date
-        public let totalHomeUsage: Double
+        public let totalHomeUsage: Double?
         public let totalBatteryDischarge: Double?
         public let totalGridEnergyExported: Double?
     }
@@ -239,7 +239,7 @@ public extension EneryHistory.EnergyEntry {
             consumerEnergyImportedFromBattery: lhs.consumerEnergyImportedFromBattery + rhs.consumerEnergyImportedFromBattery,
             consumerEnergyImportedFromGenerator: lhs.consumerEnergyImportedFromGenerator + rhs.consumerEnergyImportedFromGenerator,
             rawTimestamp: rhs.rawTimestamp,
-            totalHomeUsage: lhs.totalHomeUsage + rhs.totalHomeUsage,
+            totalHomeUsage: (lhs.totalHomeUsage ?? 0) + (rhs.totalHomeUsage ?? 0),
             totalBatteryDischarge: (lhs.totalBatteryDischarge ?? 0) + (rhs.totalBatteryDischarge ?? 0),
             totalGridEnergyExported: (lhs.totalGridEnergyExported ?? 0) + (rhs.totalGridEnergyExported ?? 0)
         )

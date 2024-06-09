@@ -42,7 +42,7 @@ public struct SiteStatus: Decodable {
     public let gatewayId: String
 //    public let energyLeft: Double
 //    public let totalPackEnergy: Double
-    public let percentageCharged: Double
+//    public let percentageCharged: Double
     public let batteryType: String
 //    public let backupCapable: Bool
     public let batteryPower: Double
