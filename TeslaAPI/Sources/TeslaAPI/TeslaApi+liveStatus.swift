@@ -50,7 +50,7 @@ public struct LiveStatus: Decodable {
 //    public let gridServicesPower: Double
     public let generatorPower: Double
     public let gridStatus: GridStatus
-    public let gridServicesActive: Bool
+//    public let gridServicesActive: Bool
 //    public let backupCapable: Bool
     public let stormModeActive: Bool
     public let timestamp: Date
