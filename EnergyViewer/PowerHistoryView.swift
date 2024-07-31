@@ -38,6 +38,9 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                                 .padding()
                                 .overlay(Capsule().stroke(Color.gray, lineWidth: 2))
                         }
+                        #if os(visionOS)
+                        .buttonStyle(.plain)
+                        #endif
                         Spacer()
                         Text(self.viewModel.date)
                             .font(isPhone ? .title2 : .title)
@@ -55,7 +58,11 @@ struct PowerHistoryView<ViewModel: PowerHistoryViewModel>: View {
                                 .fontWeight(.bold)
                                 .padding()
                                 .overlay(Capsule().stroke(self.viewModel.canAdvanceDate ? Color.gray : Color.clear, lineWidth: 2))
-                        }.disabled(!self.viewModel.canAdvanceDate)
+                        }
+                        .disabled(!self.viewModel.canAdvanceDate)
+                        #if os(visionOS)
+                        .buttonStyle(.plain)
+                        #endif
                     }
                     .padding(.bottom)
                     .frame(maxWidth: 600)
@@ -175,6 +182,8 @@ struct ToggleButton<Content: View>: View {
                 Capsule().stroke(isOn ? colour : .clear, lineWidth: 2)
             )
             .onTapGesture { self.isOn.toggle() }
+            .contentShape(.capsule)
+            .hoverEffect()
     }
 }
 
