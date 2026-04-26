@@ -47,7 +47,7 @@ extension TeslaApi {
 
     fileprivate enum OAuthConstants {
         static let baseUri = URL(string: "https://auth.tesla.com/")!
-        static let redirectUri = "https://auth.tesla.com/void/callback"
+        static let redirectUri = "tesla://auth/callback"
         static let clientId = "ownerapi"
     }
 
